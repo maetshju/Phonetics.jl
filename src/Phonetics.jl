@@ -1,5 +1,7 @@
 module Phonetics
 
-greet() = print("Hello World!")
+include("VowelSpace.jl")
+
+export Formants, VowelSpace, plotDensity, area, vdi
 
 end # module
