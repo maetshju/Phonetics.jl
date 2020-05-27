@@ -1,6 +1,6 @@
 module Phonetics
 
-include("VowelSpace.jl")
+include("VowelDensity.jl")
 
 export Formants, VowelSpace, plotDensity, area, vdi
 
