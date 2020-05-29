@@ -72,6 +72,22 @@ function densityPlot(v::VowelSpace; standardize_axes=true, scale_densities=false
   plot!(hullpts[:,1], hullpts[:,2], line=(3, :path), label="Threshold")
 end
 
+"""
+    vdi(v::VowelSpace; unstandardize=true)
+
+Calculates the vowel dispersion index (vdi) for given `VowelSpace`, `v`. Effectively, it is a modification of the total variation of the vowel space density. Details are given in Kelley & Aalto (2019, Measuring the dispersion of density in head and neck cancer patients' vowel spaces: The vowel dispersion index, *Canadian Acoustics 47*(3), 114-115).
+
+Args
+=====
+
+* `v` The `VowelSpace` for which to calculate the vdi
+* `unstandardize` (keyword) Flag to convert the semi-normalized F1 and F2 in `v` to Hz (or whatever units were passed in when `v` was created).
+
+Returns
+========
+
+The vowel dispersion index as calculated for `v`. The vdi is a dimensionless number.
+"""
 function vdi(v::VowelSpace; unstandardize=true)
   if unstandardize
     f1vals = v.f1[1:2] .* v.formants.medians[1] .+ v.formants.medians[1]
@@ -93,9 +109,25 @@ function vdi(v::VowelSpace; unstandardize=true)
     end
   end
 
-  return sqrt(sum(scaled_∂z∂f1.^2  .+ scaled_∂z∂f2.^2))
+  return sum(sqrt.(scaled_∂z∂f1.^2  .+ scaled_∂z∂f2.^2))
 end
 
+"""
+    area(v::VowelSpace; unstandardize=true)
+
+Returns the area of the passed in `VowelSpace`, `v`.
+
+Args
+=====
+
+* `v` The `VowelSpace` to calculate the area for
+* `unstandardize` (keyword) Flag to convert the semi-normalized F1 and F2 in `v` to Hz (or whatever units were passed in when `v` was created). Will cause the convex hull to be re-calculated to determine the vowel space area in this new space
+
+Returns
+========
+
+The area of the convex hull bounding the vowel space. Unit for area when F1 and F2 unstandardized back to Hz is Hz².
+"""
 function area(v::VowelSpace; unstandardize=true)
   if unstandardize
     hullpts = Vector()
@@ -114,7 +146,23 @@ function area(v::VowelSpace; unstandardize=true)
   end
 end
 
-function VowelSpace(formants; temporalNorm=true)
+"""
+    VowelSpace(formants::Formants; temporalNorm=true)
+
+Calculates a `VowelSpace` and density based on `formants`. Though this function is not an exact implementation, see Story & Bunton (2017, Vowel space density as an indicator of speech performance, *J. Acoust. Soc. Am. 141*(5), EL458-EL464) for more details.
+
+Args
+======
+
+* `formants` A `Formants` object from which to create the `VowelSpace` (and corresponding density)
+* `temporalNorm` (keyword) Flag to divide the density counts by the number of discrete time steps in `formants`. Accounts for temporal differences that occur between recordings of different lengths, which will affect the density counts
+
+Returns
+=========
+
+A `VowelSpace` object representing the calculated vowel space and density.
+"""
+function VowelSpace(formants::Formants; temporalNorm=true)
   
   minF1 = minimum(formants[:,1])
   maxF1 = maximum(formants[:,1])
