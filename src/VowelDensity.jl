@@ -31,7 +31,7 @@ mutable struct VowelSpace
   ∂z∂f2
 end
 
-function densityPlot(v::VowelSpace; standardize_axes=true, scale_densities=false)
+function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false, type=:density, kw...)
 
   f1vals = v.f1
   f2vals = v.f2
@@ -53,7 +53,10 @@ function densityPlot(v::VowelSpace; standardize_axes=true, scale_densities=false
   # while f2 is measured as changes in columns
   # need to transpose the matrix for f1 to be indexed with columns
   # and f2 to be indexed with rows
-  heatmap(f1vals, f2vals, density', title="A=$a Hz², VDI=$vd", xlab="F1", ylab="F2")
+
+  if type==:density
+    p = Plots.heatmap(f1vals, f2vals, density'; kw...)
+  end
 
   hullpts = Vector()
   for vtx in v.hull.vertices
@@ -69,7 +72,17 @@ function densityPlot(v::VowelSpace; standardize_axes=true, scale_densities=false
     hullpts[:,2] = hullpts[:,2] .* v.formants.medians[2] .+ v.formants.medians[2]
   end
 
-  plot!(hullpts[:,1], hullpts[:,2], line=(3, :path), label="Threshold")
+  if type==:density
+    p = Plots.plot!(hullpts[:,1], hullpts[:,2], line=(3, :path), label="Threshold")
+  elseif type==:area
+    p = Plots.plot(hullpts[:,1], hullpts[:,2], line=(3, :path); kw...)
+  end
+  return p
+end
+
+function Plots.plot!(v::VowelSpace; standardize_axes=true, scale_densities=false, type=:density, kw...)
+  p = plot(v, standardize_axes=standardize_axes, scale_densities=scale_densities, type=type; kw...)
+  Plots.plot!(p)
 end
 
 """
@@ -89,6 +102,7 @@ Returns
 The vowel dispersion index as calculated for `v`. The vdi is a dimensionless number.
 """
 function vdi(v::VowelSpace; unstandardize=true)
+
   if unstandardize
     f1vals = v.f1[1:2] .* v.formants.medians[1] .+ v.formants.medians[1]
     Δf1 = diff(f1vals)
@@ -98,6 +112,7 @@ function vdi(v::VowelSpace; unstandardize=true)
     Δf1 = diff(v.f1[1:2])
     Δf2 = diff(v.f2[1:2])
   end
+
   scaled_∂z∂f1 = v.∂z∂f1 ./ Δf1
   scaled_∂z∂f2 = v.∂z∂f2 ./ Δf2
 
@@ -149,7 +164,7 @@ end
 """
     VowelSpace(formants::Formants; temporalNorm=true)
 
-Calculates a `VowelSpace` and density based on `formants`. Though this function is not an exact implementation, see Story & Bunton (2017, Vowel space density as an indicator of speech performance, *J. Acoust. Soc. Am. 141*(5), EL458-EL464) for more details.
+Constructor for a `VowelSpace` based on `formants`. Though this function is not an exact implementation, see Story & Bunton (2017, Vowel space density as an indicator of speech performance, *J. Acoust. Soc. Am. 141*(5), EL458-EL464) for more details on calculating the vowel space and the vowel space density.
 
 Args
 ======
@@ -174,15 +189,12 @@ function VowelSpace(formants::Formants; temporalNorm=true)
 
   densityGrid = createDensityGrid(formants.formants)
 
-  # what do we do with formantNorm here?
-
   local hullGrid
 
   if temporalNorm
-    normGrid = densityGrid / size(formants.formants, 1)
+    normGrid = densityGrid ./ size(formants.formants, 1)
     hullGrid = map(x -> x < 0.25 ? zero(x) : x, normGrid ./ maximum(normGrid))
-  else
-    
+  else    
     normGrid = densityGrid ./ maximum(densityGrid)
     hullGrid = map(x -> x < 0.25 ? zero(x) : x, densityGrid)
   end
@@ -272,6 +284,24 @@ function createDensityGrid(formants, gridInterval=0.01, densityRadius=0.05)
   return densityGrid
 end
 
+"""
+    Formants(fname; mdnFilt=true, avgFilt=true, outlierFilt=false)
+
+Constructs a `Formants` object from tabular formant data contained in the file `fname` refers to. See Story & Bunton (2017, Vowel space density as an indicator of speech performance, *J. Acoust. Soc. Am. 141*(5), EL458-EL464) for more details on processing the formant data.
+
+Args
+=====
+
+* `fname` A `String` containing the name of the file of formant data to read in. The file is expected to be tab-delimited, where the first column has F1 measurements, and the second column has F2 measurements.
+* `mdnFilt` (keyword) Flag to perform a moving median filter on the formant data (current window size is set to 3)
+* `avgFilt` (keyword) Flag to perform a moving mean filter on the formant data (current window size is set to five)
+* `outlierFilt` (keyword) Flag to remove outlying formant observations (current threshold is set to remove rows where F1 >= 800 or F2 >= 2300); not specified in Story & Bunton (2017)
+
+Returns
+========
+
+A `Formants` object containing the array of formant values, as well as the values needed to undo the median transformation that is applied to the formant data.
+"""
 function Formants(fname; mdnFilt=true, avgFilt=true, outlierFilt=false)
   open(fname, "r") do f
     formants = DelimitedFiles.readdlm(f, '\t')
