@@ -41,9 +41,9 @@ function ellipsePts(f1, f2; percent=0.95, nPoints=1000)
   r = sqrt(quantile(Chisq(2), percent))
   t = range(0, 2π, length=nPoints)
   S = hcat(cos.(t), sin.(t)) .* r
-  println(size(L))
-  println(size(S))
 
-  pts = [mean(f1) mean(f2)] .+ S * L
-  return pts
+  pts = L * S'
+  pts[1,:] .+= mean(f1)
+  pts[2,:] .+= mean(f2)
+  Array(pts')
 end
