@@ -1,5 +1,8 @@
 module Phonetics
 
+include("sound.jl")
+export Sound
+
 include("VowelDensity.jl")
 export Formants, VowelSpace, plot, plot!, area, vdi
 
@@ -8,5 +11,8 @@ export neareyE, neareyI, lobanov, formantWiseLogMean, nearey1, logmeanI, formant
 
 include("vowelplot.jl")
 export vowelPlot, ellipsePts
+
+include("acdist.jl")
+export acdist, avgseq, distinctiveness
 
 end # module
