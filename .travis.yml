@@ -1,0 +1,7 @@
+language: julia
+julia:
+  - 1.0
+  - 1.4
+
+script:
+  - julia --color=yes -e "using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.test()"
