@@ -3,8 +3,9 @@ julia:
   - 1.0
   - 1.4
 
-apt:
-  - python3-scipy
+before-install:
+
+  - sudo apt install python3-scipy
 
 script:
   - julia --color=yes -e "using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.test()"
