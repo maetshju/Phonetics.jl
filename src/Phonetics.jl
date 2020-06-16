@@ -15,4 +15,18 @@ export vowelPlot, ellipsePts
 include("acdist.jl")
 export acdist, avgseq, distinctiveness
 
+include("upt.jl")
+include("vptree.jl")
+include("pnd.jl")
+include("phnprb.jl")
+
+export
+    pnd,
+    lev,
+    upt,
+    phnprb,
+    radiusSearch,
+    nneighbors,
+    TextVPTree
+
 end # module

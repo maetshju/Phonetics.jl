@@ -1,4 +1,3 @@
-using LexicalCharacteristics
 using Distances
 using Statistics
 using DelimitedFiles

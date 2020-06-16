@@ -34,11 +34,11 @@ Returns
 
 An `nPoints`×2 `Array` of points along the perimeter of the ellipse, ordered counter-clockwise as the polar angle of rotation moves from 0 to 2π
 """
-function ellipsePts(f1, f2; percent=0.95, nPoints=500)
+function ellipsePts(f1, f2; percent=0.95, nPoints=500, sigma=2)
   Σ = cov(hcat(f1, f2))
   L = cholesky(Σ).L
 
-  r = sqrt(quantile(Chisq(2), percent))
+  r = sqrt(quantile(Chisq(sigma), percent))
   t = range(0, 2π, length=nPoints)
   S = hcat(cos.(t), sin.(t)) .* r
 
