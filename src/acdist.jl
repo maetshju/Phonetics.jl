@@ -2,12 +2,12 @@ using DynamicAxisWarping
 using MFCC
 using Distances
 using DataFrames
-using IterTools
 using Statistics
+
 """
     acdist(s1, s2; [method=:dtw, dist=SqEuclidean(), radius=10]])
 
-Calculate the acoustic distance between `s1` and `s2` with `method` version of dynamic time warping and `dist` as the interior distance function. Using `method=:dtw` uses vanilla dynamic time warping, while `method=:fastdtw` uses the fast dtw approximation.
+Calculate the acoustic distance between `s1` and `s2` with `method` version of dynamic time warping and `dist` as the interior distance function. Using `method=:dtw` uses vanilla dynamic time warping, while `method=:fastdtw` uses the fast dtw approximation. Note that this is not a true mathematical distance metric because dynamic time warping does not necessarily satisfy the triangle inequality, nor does it guarantee the identity of indiscernibles.
 
 Args
 =====
@@ -34,7 +34,7 @@ end
 
 Convert `s1` and `s2` to a frequency representation specified by `rep`, then calculate acoustic distance between `s1` and `s2`. Currently only `:mfcc` is supported for `rep`, using defaults from the `MFCC` package except that the first coefficient for each frame is removed and replaced with the sum of the log energy of the filterbank in that frame, as is standard in ASR.
 """
-function acdist(s1::Sound, s2::Sound, rep=:mfcc)
+function acdist(s1::Sound, s2::Sound, rep=:mfcc; method=:dtw, dist=SqEuclidean(), radius=10)
 
   if rep == :mfcc
     r1 = sound2mfcc(s1)
@@ -78,8 +78,8 @@ function avgseq(S; method=:dtw, dist=SqEuclidean(), radius=10, center=:medoid, d
 
   if center == :medoid
     D = zeros(length(S), length(S))
-    for (r, c) in Iterators.product(1:length(S), 1:length(S))
-      D[r, c] = acdist(S[r], S[c], method=method, dist=dist, radius=radius)[1]
+    for idx in CartesianIndices(D)
+      D[idx] = acdist(S[idx[1]], S[idx[2]], method=method, dist=dist, radius=radius)[1]
     end
     sums = vec(sum(D, dims=1))
     init = S[argmin(sums)]
