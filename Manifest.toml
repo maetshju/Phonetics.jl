@@ -384,8 +384,8 @@ version = "3.100.0+1"
 
 [[LexicalCharacteristics]]
 deps = ["DataFrames", "DataStructures", "Distributed", "Documenter", "ProgressMeter", "Statistics", "Test"]
-git-tree-sha1 = "fe7ee8f982f07c49ae1bb9ebfd08233e9cb2dae0"
-repo-rev = "master"
+git-tree-sha1 = "585cf6aee682e2b6989c664809107573a070a781"
+repo-rev = "v0.3.0"
 repo-url = "https://gitlab.com/maetshju/LexicalCharacteristics.jl"
 uuid = "0fc7436a-e51f-11e8-39ce-5bcdd294ab08"
 version = "0.1.0"
