@@ -4,13 +4,11 @@ authors = ["Matthew C. Kelley <matthew.curtis.kelley@gmail.com"]
 version = "0.1.0"
 
 [deps]
-DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 DynamicAxisWarping = "aaaaaaaa-4a10-5553-b683-e707b00e83ce"
-FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
 GeometricalPredicates = "fd0ad045-b25c-564e-8f9c-8ef5c5f21267"
 LexicalCharacteristics = "0fc7436a-e51f-11e8-39ce-5bcdd294ab08"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
