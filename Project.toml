@@ -27,4 +27,5 @@ WAV = "8149f6b0-98f6-5db9-b78f-408fbbb8ef88"
 
 [compat]
 MFCC = "≥ 0.3"
+QHull = "0.2"
 julia = "≥ 1.3"
