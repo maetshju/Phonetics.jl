@@ -13,7 +13,7 @@ include("vowelplot.jl")
 export vowelPlot, ellipsePts
 
 include("acdist.jl")
-export acdist, avgseq, distinctiveness
+export acdist, avgseq, distinctiveness, sound2mfcc
 
 include("upt.jl")
 include("vptree.jl")
