@@ -555,9 +555,9 @@ version = "1.0.5"
 
 [[Plots]]
 deps = ["Base64", "Contour", "Dates", "FFMPEG", "FixedPointNumbers", "GR", "GeometryTypes", "JSON", "LinearAlgebra", "Measures", "NaNMath", "PlotThemes", "PlotUtils", "Printf", "REPL", "Random", "RecipesBase", "RecipesPipeline", "Reexport", "Requires", "Showoff", "SparseArrays", "Statistics", "StatsBase", "UUIDs"]
-git-tree-sha1 = "e61dab1d6e9c9888f39d7e8ad8e84b301d13518d"
+git-tree-sha1 = "70908194bb636437f181683625925505fd1664a8"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-version = "1.4.0"
+version = "1.4.1"
 
 [[Polyhedra]]
 deps = ["GeometryTypes", "JuMP", "LinearAlgebra", "RecipesBase", "SparseArrays", "StaticArrays"]
