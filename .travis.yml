@@ -13,4 +13,7 @@ before-install:
   - sudo apt-get install python3-scipy
 
 script:
-  - julia --color=yes -e "using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.test()"
+  - julia --color=yes -e "using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.test(coverage=true)"
+
+after-success:
+  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
