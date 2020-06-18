@@ -30,7 +30,7 @@ end
   #  and how order matters when performing sequential floating point operations).
   @test lobCustom.f1 ≈ lobFunc.f1
   @test lobCustom.f2 ≈ lobFunc.f2
-  @test lobCustom.vowel == lobfunc.vowel
+  @test lobCustom.vowel == lobFunc.vowel
   @test lobCustom.speaker == lobFunc.speaker
 
   nICustom = DataFrame(f1=log.(f1) .- mean(log.(f1)), f2=log.(f2) .- mean(log.(f2)), vowel=vowel, speaker=speaker)
