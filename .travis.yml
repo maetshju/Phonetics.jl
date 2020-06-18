@@ -19,4 +19,4 @@ after-success:
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
   - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
   - julia -e 'using Pkg; Pkg.add("Documenter")'
-  - julia --project=docs/ docs/make.jl
+  - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); include("docs/make.jl")'
