@@ -5,6 +5,5 @@ makedocs(sitename = "Phonetics.jl",
          repo = "https://github.com/maetshju/Phonetics.jl")
 
 deploydocs(
-repo = "github.com/maetshju/Phonetics.jl.git",
-julia = "1.4"
+repo = "github.com/maetshju/Phonetics.jl.git"
 )
