@@ -5,7 +5,7 @@ The uniqueness point of a word is defined as the segment in a sequence after whi
 ## Examples
 
 ```@example
-using LexicalCharacteristics
+using Phonetics
 sample_corpus = [
 ["K", "AE1", "T"], # cat
 ["K", "AA1", "B"], # cob
@@ -20,7 +20,7 @@ upt(sample_corpus, [["K", "AA1", "T"]]; inCorpus=true)
 Here, [K AA1 B] *cob* has a uniqueness point of 2. Looking at the corpus, we can be sure we're looking at *cob* after observing the [AA1] because nothing else begins with the sequence [K AA1]. Thus, its uniqueness point is 2.
 
 ```@example
-using LexicalCharacteristics
+using Phonetics
 sample_corpus = [
 ["K", "AE1", "T"], # cat
 ["K", "AA1", "B"], # cob
@@ -35,7 +35,7 @@ upt(sample_corpus, [["K", "AE1", "D"]]; inCorpus=false)
 As is evident, given this sample corpus, [K AE1 D] *cad* is unique after the 3rd segment. That is, it can be uniquely identified after hearing the [D].
 
 ```@example
-using LexicalCharacteristics
+using Phonetics
 sample_corpus = [
 ["K", "AE1", "T"], # cat
 ["K", "AA1", "B"], # cob

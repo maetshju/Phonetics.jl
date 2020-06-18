@@ -5,7 +5,7 @@ Phonological neighborhood density, as described by Luce & Pisoni (1998), as a co
 The `pnd` function allows a user to calculate this value for a list of words based on a given corpus. The following example shows how to use the `pnd` function. Note that the entries in the sample corpus are given using the Arpabet transcription scheme.
 
 ```@example
-using LexicalCharacteristics
+using Phonetics
 sample_corpus = [
 ["K", "AE1", "T"], # cat
 ["K", "AA1", "B"], # cob
@@ -26,7 +26,7 @@ This is a more likely research-scenario. For the purposes of this example, I'll 
 Now, the first thing we need to do is read the file into Julia and process it into a usable state. Because we're interested in the phonological transcriptions here, we'll strip away the orthographic representation.
 
 ```julia
-using LexicalCharacteristics
+using Phonetics
 corpus = Vector()
 open("cmudict-0.7b") do f
   lines = readlines(f)

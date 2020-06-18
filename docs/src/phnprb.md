@@ -12,7 +12,7 @@ diphone into account, or just looking at the co-occurrence probability.
 ## Examples
 
 ```@example
-using LexicalCharacteristics
+using Phonetics
 sample_corpus = [
 ["K", "AE1", "T"], # cat
 ["K", "AA1", "B"], # cob
@@ -33,7 +33,7 @@ phonotactic probability of this sequence is ``{\frac{4}{20}}^3``, which is
 but this is unavoidable.
 
 ```@example
-using LexicalCharacteristics
+using Phonetics
 sample_corpus = [
 ["K", "AE1", "T"], # cat
 ["K", "AA1", "B"], # cob
