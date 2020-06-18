@@ -10,14 +10,10 @@ Performs the Lobanov normalization routine, which calculates the z-score of each
 Args
 =====
 
-* `f1` An `Array` of F1 values
-* `f2` An `Array` of F2 values
+* `f1`  F1 values
+* `f2` F2 values
+* `vowel` Vowel categories; not used in calculation, but passed in to keep them linked with their appropriate formant and speaker information
 * `speaker` An `Array` of speaker IDs; can be integers, symbols, string, and any other data type supported by the `groupby` function in the `DataFrames` package
-
-Returns
-========
-
-A `DataFrame` object the columns `f1`, `f2`, `speaker`. The final row order is guaranteed to preserve the row order of the data passed in.
 """
 function lobanov(f1, f2, vowel, speaker)
   d  = DataFrame(f1=f1, f2=f2, vowel=vowel, speaker=speaker)
@@ -29,6 +25,19 @@ function lobanov(f1, f2, vowel, speaker)
   return d
 end
 
+"""
+    neareyI(f1, f2, vowel, speaker)
+
+Performs the Nearey formant intrinsice normalization routine, which logs the formants and subtracts the mean log F1 value from the log F1 values and the mean log F2 value from the F2 values. See Nearey (1978, phonetic feature system for vowels, Indiania University Linguistics Club) for more details.
+
+Args
+=====
+
+* `f1`  F1 values
+* `f2` F2 values
+* `vowel` Vowel categories; not used in calculation, but passed in to keep them linked with their appropriate formant and speaker information
+* `speaker` An `Array` of speaker IDs; can be integers, symbols, string, and any other data type supported by the `groupby` function in the `DataFrames` package
+"""
 function neareyI(f1, f2, vowel, speaker)
   d  = DataFrame(f1=log.(f1), f2=log.(f2), vowel=vowel, speaker=speaker)
   d.rowN = collect(1:size(d, 1))
@@ -45,6 +54,20 @@ end
 # aliases for neareyI that have appeared in the literature
 formantWiseLogMean = nearey1 = logmeanI = neareyI
 
+
+"""
+    neareyI(f1, f2, vowel, speaker)
+
+Performs the Nearey formant extrinsic normalization routine, which logs the formants and subtracts the mean of all log formant values from each log formant value. See Nearey (1978, phonetic feature system for vowels, Indiania University Linguistics Club) for more details.
+
+Args
+=====
+
+* `f1`  F1 values
+* `f2` F2 values
+* `vowel` Vowel categories; not used in calculation, but passed in to keep them linked with their appropriate formant and speaker information
+* `speaker` An `Array` of speaker IDs; can be integers, symbols, string, and any other data type supported by the `groupby` function in the `DataFrames` package
+"""
 function neareyE(f1, f2, vowel, speaker)
   d  = DataFrame(f1=log.(f1), f2=log.(f2), vowel=vowel, speaker=speaker)
   d.rowN = collect(1:size(d, 1))
