@@ -19,29 +19,33 @@ end
   f = readdlm("sample_formants.txt")
   f1 = f[:, 1]
   f2 = f[:, 2]
+  vowel = repeat(["i"], length(f1))
   speaker = repeat([1], length(f1))
 
-  lobCustom = DataFrame(f1=zscore(f1), f2=zscore(f2), speaker=speaker)
-  lobFunc = lobanov(f1, f2, speaker)
+  lobCustom = DataFrame(f1=zscore(f1), f2=zscore(f2), vowel=vowel, speaker=speaker)
+  lobFunc = lobanov(f1, f2, vowel, speaker)
   # use check for approximate equality because sum and related functions
   # called on the view genereated by `groupby` produces a different value
   # than sum called on the original array (due to how the view is generated
   #  and how order matters when performing sequential floating point operations).
   @test lobCustom.f1 ≈ lobFunc.f1
   @test lobCustom.f2 ≈ lobFunc.f2
-  @test lobCustom.speaker ≈ lobFunc.speaker
+  @test lobCustom.vowel == lobfunc.vowel
+  @test lobCustom.speaker == lobFunc.speaker
 
-  nICustom = DataFrame(f1=log.(f1) .- mean(log.(f1)), f2=log.(f2) .- mean(log.(f2)), speaker=speaker)
-  nIFunc = neareyI(f1, f2, speaker)
+  nICustom = DataFrame(f1=log.(f1) .- mean(log.(f1)), f2=log.(f2) .- mean(log.(f2)), vowel=vowel, speaker=speaker)
+  nIFunc = neareyI(f1, f2, vowel, speaker)
   @test nICustom.f1 ≈ nIFunc.f1
   @test nICustom.f2 ≈ nIFunc.f2
-  @test nICustom.speaker ≈ nIFunc.speaker
+  @test nICustom.vowel == nIFunc.vowel
+  @test nICustom.speaker == nIFunc.speaker
 
-  nECustom = DataFrame(f1=log.(f1) .- mean(log.([f1; f2])), f2=log.(f2) .- mean(log.([f1; f2])), speaker=speaker)
-  nEFunc = neareyE(f1, f2, speaker)
+  nECustom = DataFrame(f1=log.(f1) .- mean(log.([f1; f2])), f2=log.(f2) .- mean(log.([f1; f2])), vowel=vowel, speaker=speaker)
+  nEFunc = neareyE(f1, f2, vowel, speaker)
   @test nECustom.f1 ≈ nEFunc.f1
   @test nECustom.f2 ≈ nEFunc.f2
-  @test nECustom.speaker ≈ nEFunc.speaker
+  @test nECustom.vowel == nEFunc.vowel
+  @test nECustom.speaker == nEFunc.speaker
 end
 
 @testset "Acoustic distance" begin
