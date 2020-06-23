@@ -1,7 +1,7 @@
 using Documenter, Phonetics
 
 makedocs(sitename = "Phonetics.jl",
-         pages = ["index.md", "vowelplot.md", "pnd.md", "upt.md", "phnprb.md", "textvptree.md"],
+         pages = ["index.md", "vowelplot.md", "lc.md", "textvptree.md"],
          repo = "https://github.com/maetshju/Phonetics.jl")
 
 deploydocs(

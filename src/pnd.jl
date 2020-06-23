@@ -48,7 +48,7 @@ function lev(s, t)
 end
 
 """
-    pnd(corpus::Array, queries::Array; progress=true)
+    pnd(corpus::Array, queries::Array; [progress=true])
 
 Calculate the phonological neighborhood density (pnd) for each item in `queries`
 based on the items in `corpus`. This function uses a vantage point tree data

@@ -74,7 +74,7 @@ function addItem!(tree::Tree, item)
 end
 
 """
-    upt(corpus, queries; inCorpus=true)
+    upt(corpus, queries; [inCorpus=true])
 
 Calculates the phonological uniqueness point (upt) the items in `queries` based
 on the items in `corpus`. If the items are expected to be in the corpus, this
