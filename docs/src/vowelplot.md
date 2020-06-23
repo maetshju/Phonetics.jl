@@ -25,7 +25,7 @@ data = generateFormants(30, gender=[:w], seed=56) # hide
 vowelPlot(data.f2, data.f1, data.vowel,
   xflip=true, yflip=true, xlab="F2 (Hz)", ylab="F1 (Hz)")
 savefig("alt_axes_vowel_plot.svg") # hide
-nothing #
+nothing # hide
 ```
 
 ![Vowel plot with alternate axes](alt_axes_vowel_plot.svg)
