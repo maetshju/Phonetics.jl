@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600"
+   height="400"
+   viewBox="0 0 2400 1600"
+   version="1.1"
+   id="svg1880"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)">
+  <metadata
+     id="metadata1884">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:pagecheckerboard="true"
+     inkscape:document-rotation="0"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     id="namedview1882"
+     showgrid="false"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="327.94304"
+     inkscape:cy="187.8996"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1880" />
+  <defs
+     id="defs1760">
+    <clipPath
+       id="clip630">
+      <rect
+         x="0"
+         y="0"
+         width="2400"
+         height="1600"
+         id="rect1757" />
+    </clipPath>
+  </defs>
+  <defs
+     id="defs1767">
+    <clipPath
+       id="clip631">
+      <rect
+         x="480"
+         y="0"
+         width="1681"
+         height="1600"
+         id="rect1764" />
+    </clipPath>
+  </defs>
+  <defs
+     id="defs1774">
+    <clipPath
+       id="clip632">
+      <rect
+         x="162"
+         y="47"
+         width="2191"
+         height="1440"
+         id="rect1771" />
+    </clipPath>
+  </defs>
+  <polyline
+     clip-path="url(#clip632)"
+     style="stroke:#000000; stroke-width:60; stroke-opacity:1; fill:none"
+     points="   224.444,427.155 245.316,390.541 266.188,355.441 287.06,321.998 307.932,290.345 328.804,260.61 349.676,232.913 370.548,207.365 391.42,184.069 412.292,163.12    433.164,144.6 454.036,128.586 474.908,115.14 495.78,104.319 516.651,96.1639 537.523,90.7092 558.395,87.9763 579.267,87.9763 600.139,90.7092 621.011,96.1639    641.883,104.319 662.755,115.14 683.627,128.586 704.499,144.6 725.371,163.12 746.243,184.069 767.115,207.365 787.987,232.913 808.859,260.61 829.731,290.345    850.602,321.998 871.474,355.441 892.346,390.541 913.218,427.155 934.09,465.136 954.962,504.331 975.834,544.583 996.706,585.729 1017.58,627.603 1038.45,670.037    1059.32,712.861 1080.19,755.901 1101.07,798.985 1121.94,841.939 1142.81,884.589 1163.68,926.765 1184.55,968.296 1205.43,1009.02 1226.3,1048.76 1247.17,1087.37    1268.04,1124.68 1288.91,1160.56 1309.79,1194.85 1330.66,1227.41 1351.53,1258.12 1372.4,1286.85 1393.27,1313.49 1414.14,1337.92 1435.02,1360.05 1455.89,1379.8    1476.76,1397.07 1497.63,1411.81 1518.5,1423.95 1539.38,1433.44 1560.25,1440.25 1581.12,1444.35 1601.99,1445.72 1622.86,1444.35 1643.74,1440.25 1664.61,1433.44    1685.48,1423.95 1706.35,1411.81 1727.22,1397.07 1748.1,1379.8 1768.97,1360.05 1789.84,1337.92 1810.71,1313.49 1831.58,1286.85 1852.46,1258.12 1873.33,1227.41    1894.2,1194.85 1915.07,1160.56 1935.94,1124.68 1956.82,1087.37 1977.69,1048.76 1998.56,1009.02 2019.43,968.296 2040.3,926.765 2061.17,884.589 2082.05,841.939    2102.92,798.985 2123.79,755.901 2144.66,712.861 2165.53,670.037 2186.41,627.603 2207.28,585.729 2228.15,544.583 2249.02,504.331 2269.89,465.136 2290.77,427.155       "
+     id="polyline1876" />
+  <path
+     clip-path="url(#clip630)"
+     d="M 0 0 M1170.54 229.178 L1170.54 748.62 L1405.72 748.62 Q1536.28 748.62 1607.58 681.027 Q1678.87 613.435 1678.87 488.436 Q1678.87 364.362 1607.58 296.77 Q1536.28 229.178 1405.72 229.178 L1170.54 229.178 M983.505 75.4751 L1405.72 75.4751 Q1638.13 75.4751 1756.65 181.03 Q1876.09 285.659 1876.09 488.436 Q1876.09 693.064 1756.65 797.693 Q1638.13 902.322 1405.72 902.322 L1170.54 902.322 L1170.54 1457.88 L983.505 1457.88 L983.505 75.4751 Z"
+     fill="#000000"
+     fill-rule="evenodd"
+     fill-opacity="1"
+     id="path1878" />
+</svg>
