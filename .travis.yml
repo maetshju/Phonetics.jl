@@ -10,7 +10,7 @@ matrix:
 
 before-install:
 
-  - sudo apt-get install python3-scipy
+  - sudo apt-get install python3-scipy qt5-default
 
 script:
   - julia --color=yes -e "using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.test(coverage=true)"
