@@ -160,6 +160,7 @@ phnprb(corpus::Array, frequencies::Array{Int64}, queries::Array;
 
 ```@docs
 upt(corpus::Array, queries::Array; [inCorpus=true])
+```
 
 ## References
 
