@@ -15,6 +15,9 @@ export vowelPlot, ellipsePts
 include("acdist.jl")
 export acdist, avgseq, distinctiveness, sound2mfcc
 
+include("util.jl")
+export generateFormants
+
 include("upt.jl")
 include("vptree.jl")
 include("pnd.jl")

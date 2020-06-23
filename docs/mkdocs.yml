@@ -20,6 +20,7 @@ docs_dir: 'build'
 
 pages:
   - Home: index.md
+  - Vowel plotting: vowelplot.md
   - Phonological neighborhood density: pnd.md
   - Uniqueness point: upt.md
   - Phonotactic probability: phnprb.md

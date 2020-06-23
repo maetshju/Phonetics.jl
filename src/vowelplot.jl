@@ -4,7 +4,7 @@ using LinearAlgebra
 using Distributions
 
 """
-    vowelPlot(f1, f2, cats; [meansOnly=false, addLabels=true, ell=false, ellPercent=0.67, nEllPts=500, kw...])
+    vowelPlot(f1, f2, cats; [meansOnly=false, addLabels=true, ell=false, ellPercent=0.67, nEllPts=500, markersize=1, linewidth=2, kw...])
 
 Create an F1-by-F2 vowel plot. The `f1` values are displayed along the x-axis, and the `f2` values are displayed along the y-axis, with each unique vowel class in `cats` being represented with a new color. The series labels in the legend will take on the unique values contained in `cats`. The alternate display whereby reversed F2 is on the x-axis and reversed F1 is on the y-axis can be created by passing the F2 values in for the `f1` argument and F1 values in for the `f2` argument, and then using the `:flip` magic argument provided by the `Plots` package.
 
@@ -21,15 +21,19 @@ Args
 * `ell` (keyword) Whether to add data ellipses to the plot
 * `ellPercent` (keyword) How much of the data distribution the ellipse should cover (approximately)
 * `nEllPts` (keyword) How many points should be used when plotting the ellipse
+* `markersize` (keyword) How large the markers should be; passed directly to `plot`
+* `linewidth` (keyword) How wide the line for the llipses should be; passed directly to `plot`
 """
-function vowelPlot(f1, f2, cats; meansOnly=false, addLabels=false, ell=false, ellPercent=0.67, nEllPts=500, kw...)
+function vowelPlot(f1, f2, cats; meansOnly=false, addLabels=false, ell=false, ellPercent=0.67, nEllPts=500, markersize=3, linewidth=3, kw...)
   d = DataFrame(f1=f1, f2=f2, cat=cats)
   groups = groupby(d, :cat)
 
   if meansOnly
-    p = Plots.scatter([mean(groups[1].f1)], [mean(groups[1].f2)], label=groups[1].cat[1]; kw...)
+    p = Plots.scatter([mean(groups[1].f1)], [mean(groups[1].f2)], label=groups[1].cat[1], 
+      markersize=markersize; kw...)
   else
-    p = Plots.scatter(groups[1].f1, groups[1].f2, label=groups[1].cat[1]; kw...)
+    p = Plots.scatter(groups[1].f1, groups[1].f2, label=groups[1].cat[1],
+      markersize=markersize; kw...)
   end
 
   jt1 = abs(mean(f1) / 20)
@@ -41,16 +45,17 @@ function vowelPlot(f1, f2, cats; meansOnly=false, addLabels=false, ell=false, el
 
   if ell
     e = ellipsePts(groups[1].f1, groups[1].f2, percent=ellPercent, nPoints=nEllPts)
-    p = Plots.plot!(e[:,1], e[:,2], label="", color=1)
+    p = Plots.plot!(e[:,1], e[:,2], label="", color=1, linewidth=linewidth)
   end
 
   for (i, g) in enumerate(groups)
     if i == 1 continue end
 
     if meansOnly
-      p = Plots.scatter!([mean(g.f1)], [mean(g.f2)], label=g.cat[1], color=i)
+      p = Plots.scatter!([mean(g.f1)], [mean(g.f2)], label=g.cat[1], color=i,
+        markersize=markersize)
     else
-      p = Plots.scatter!(g.f1, g.f2, label=g.cat[1], color=i)
+      p = Plots.scatter!(g.f1, g.f2, label=g.cat[1], color=i, markersize=markersize)
     end
 
     if addLabels
@@ -59,7 +64,7 @@ function vowelPlot(f1, f2, cats; meansOnly=false, addLabels=false, ell=false, el
 
     if ell
       e = ellipsePts(g.f1, g.f2, percent=ellPercent, nPoints=nEllPts)
-      p = Plots.plot!(e[:,1], e[:,2], label="", color=i)
+      p = Plots.plot!(e[:,1], e[:,2], label="", color=i, linewidth=linewidth)
     end
   end
   return p

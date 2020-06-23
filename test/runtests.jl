@@ -14,17 +14,37 @@ using Random
   @test vdi(v, unstandardize=true) ≈ 766.8716362331788
 end
 
+@testset "Random formant generation" begin
+
+  dat = generateFormants(10^7, cats=[:uw], gender=[:w])
+  datμ = mean(Array(dat[:, 1:2]), dims=1)
+  @test isapprox(datμ, [459.67 1105.52], atol=0.1)
+
+  dat = generateFormants(10^7, cats=[:aa], gender=[:w])
+  datμ = mean(Array(dat[:, 1:2]), dims=1)
+  @test isapprox(datμ, [916.36 1525.83], atol=0.1)
+
+  dat = generateFormants(30, cats=[:iy, :aa], gender=[:w, :m])
+  @test dat.vowel == repeat([:iy, :aa], inner=60)
+  @test dat.gender == repeat([:w, :m], inner=30, outer=2)
+end
+
 @testset "Normalization" begin
 
-  f = readdlm("sample_formants.txt")
-  f1 = f[:, 1]
-  f2 = f[:, 2]
-  vowel = repeat(["i"], length(f1))
-  speaker = repeat([1], length(f1))
+  dat = generateFormants(50)
+  # Use gender as speaker for tests to give two separate speakers
 
-  lobCustom = DataFrame(f1=zscore(f1), f2=zscore(f2), vowel=vowel, speaker=speaker)
-  lobFunc = lobanov(f1, f2, vowel, speaker)
-  # use check for approximate equality because sum and related functions
+  lobCustom = copy(dat)
+  rename!(lobCustom, :gender => :speaker)
+
+  lobCustom[lobCustom.speaker .== :m, :f1] = zscore(lobCustom[lobCustom.speaker .== :m, :f1])
+  lobCustom[lobCustom.speaker .== :w, :f1] = zscore(lobCustom[lobCustom.speaker .== :w, :f1])
+
+  lobCustom[lobCustom.speaker .== :m, :f2] = zscore(lobCustom[lobCustom.speaker .== :m, :f2])
+  lobCustom[lobCustom.speaker .== :w, :f2] = zscore(lobCustom[lobCustom.speaker .== :w, :f2])
+
+  lobFunc = lobanov(dat.f1, dat.f2, dat.vowel, dat.gender)
+  # check for approximate equality because sum and related functions
   # called on the view genereated by `groupby` produces a different value
   # than sum called on the original array (due to how the view is generated
   #  and how order matters when performing sequential floating point operations).
@@ -33,15 +53,44 @@ end
   @test lobCustom.vowel == lobFunc.vowel
   @test lobCustom.speaker == lobFunc.speaker
 
-  nICustom = DataFrame(f1=log.(f1) .- mean(log.(f1)), f2=log.(f2) .- mean(log.(f2)), vowel=vowel, speaker=speaker)
-  nIFunc = neareyI(f1, f2, vowel, speaker)
+  nICustom = copy(dat)
+  rename!(nICustom, :gender => :speaker)
+
+  mf1 = nICustom[nICustom.speaker .== :m, :f1]
+  nICustom[nICustom.speaker .== :m, :f1] = log.(mf1) .- mean(log.(mf1))
+  wf1 = nICustom[nICustom.speaker .== :w, :f1]
+  nICustom[nICustom.speaker .== :w, :f1] = log.(wf1) .- mean(log.(wf1))
+
+  mf2 = nICustom[nICustom.speaker .== :m, :f2]
+  nICustom[nICustom.speaker .== :m, :f2] = log.(mf2) .- mean(log.(mf2))
+  wf2 = nICustom[nICustom.speaker .== :w, :f2]
+  nICustom[nICustom.speaker .== :w, :f2] = log.(wf2) .- mean(log.(wf2))
+  
+  nIFunc = neareyI(dat.f1, dat.f2, dat.vowel, dat.gender)
   @test nICustom.f1 ≈ nIFunc.f1
   @test nICustom.f2 ≈ nIFunc.f2
   @test nICustom.vowel == nIFunc.vowel
   @test nICustom.speaker == nIFunc.speaker
 
-  nECustom = DataFrame(f1=log.(f1) .- mean(log.([f1; f2])), f2=log.(f2) .- mean(log.([f1; f2])), vowel=vowel, speaker=speaker)
-  nEFunc = neareyE(f1, f2, vowel, speaker)
+  nECustom = copy(dat)
+
+  rename!(nECustom, :gender => :speaker)
+
+  mf1 = nECustom[nECustom.speaker .== :m, :f1]
+  mfall = [mf1; nECustom[nECustom.speaker .== :m, :f2]]
+  nECustom[nECustom.speaker .== :m, :f1] = log.(mf1) .- mean(log.(mfall))
+
+  wf1 = nECustom[nECustom.speaker .== :w, :f1]
+  wfall = [wf1; nECustom[nECustom.speaker .== :w, :f2]]
+  nECustom[nECustom.speaker .== :w, :f1] = log.(wf1) .- mean(log.(wfall))
+
+  mf2 = nECustom[nECustom.speaker .== :m, :f2]
+  nECustom[nECustom.speaker .== :m, :f2] = log.(mf2) .- mean(log.(mfall))
+
+  wf2 = nECustom[nECustom.speaker .== :w, :f2]
+  nECustom[nECustom.speaker .== :w, :f2] = log.(wf2) .- mean(log.(wfall))
+
+  nEFunc = neareyE(dat.f1, dat.f2, dat.vowel, dat.gender)
   @test nECustom.f1 ≈ nEFunc.f1
   @test nECustom.f2 ≈ nEFunc.f2
   @test nECustom.vowel == nEFunc.vowel
@@ -50,10 +99,10 @@ end
 
 @testset "Acoustic distance" begin
 
-  Random.seed!(9)
-  x = rand(1000)
-  y = rand(3000)
-  z = rand(10000)
+  rng = MersenneTwister(9)
+  x = rand(rng, 1000)
+  y = rand(rng, 3000)
+  z = rand(rng, 10000)
   a = [Sound(x, 8000), Sound(y, 8000), Sound(z, 8000)]
   @test acdist(a[1], a[2]) ≈ 20478.541722315666
   @test distinctiveness(a[1], a[2:3]) ≈ mean([acdist(a[1], a[2]), acdist(a[1], a[3])])
@@ -268,5 +317,4 @@ end
   res = radiusSearch(tree, ["HH", "AE1", "T"], 1)
   res = sort(join.(res, " "))
   @test res == ["B AE1 T", "K AE1 T"]
-
 end
