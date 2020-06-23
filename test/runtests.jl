@@ -18,11 +18,11 @@ end
 
   dat = generateFormants(10^7, cats=[:uw], gender=[:w])
   datμ = mean(Array(dat[:, 1:2]), dims=1)
-  @test isapprox(datμ, [459.67 1105.52], atol=0.1)
+  @test isapprox(datμ, [459.67 1105.52], atol=1)
 
   dat = generateFormants(10^7, cats=[:aa], gender=[:w])
   datμ = mean(Array(dat[:, 1:2]), dims=1)
-  @test isapprox(datμ, [916.36 1525.83], atol=0.1)
+  @test isapprox(datμ, [916.36 1525.83], atol=1)
 
   dat = generateFormants(30, cats=[:iy, :aa], gender=[:w, :m])
   @test dat.vowel == repeat([:iy, :aa], inner=60)
