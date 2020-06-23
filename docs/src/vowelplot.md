@@ -6,9 +6,13 @@ The function provided for plotting vowels diplays offers a variety of visualizat
 
 ```@example
 using Phonetics # hide
+using Plots # hide
 data = generateFormants(30, gender=[:w], seed=56) # hide
 vowelPlot(data.f1, data.f2, data.vowel, xlab="F1 (Hz)", ylab="F2 (Hz)")
+savefig("vanilla_vowel_plot.svg") # hide
+nothing # hide
 ```
+![Vanilla vowel plot](vanilla_vowel_plot.svg)
 
 This is a traditional vowel plot, with F1 on the x-axis in increasing order and F2 on the y-axis in increasing order. Note that simulated data were generated using the `generateFormants` function. Specifying a seed value makes the results reproducible. (Keep in mind that if you are generating values for different experiments, reports, studies, etc., the seed value needs to be changed (or left unspecified) so that the same data are not generated every time when they shouldn't be reproducible.)
 
@@ -16,10 +20,15 @@ For those inclined to use the alternate axes configuration with F2 decreasing on
 
 ```@example
 using Phonetics # hide
+using Plots # hide
 data = generateFormants(30, gender=[:w], seed=56) # hide
 vowelPlot(data.f2, data.f1, data.vowel,
   xflip=true, yflip=true, xlab="F2 (Hz)", ylab="F1 (Hz)")
+savefig("alt_axes_vowel_plot.svg") # hide
+nothing #
 ```
+
+![Vowel plot with alternate axes](alt_axes_vowel_plot.svg)
 
 I don't personally prefer to look at vowel plots in this manner because I think it unfairly privileges articulatory characteristics of vowel production when examining acoustic characteristics, so subsequent examples will not be presented using this axis configuration. However, the same principle applies to switching the axes around.
 
@@ -27,10 +36,15 @@ The `vowelPlot` function also allows for ellipses to be plotted around the value
 
 ```@example
 using Phonetics # hide
+using Plots # hide
 data = generateFormants(30, gender=[:w], seed=56) # hide
 vowelPlot(data.f1, data.f2, data.vowel, ell=true, ellPercent=0.67,
   xlab="F1 (Hz)", ylab="F2 (Hz)")
+savefig("ellipse_vowel_plot.svg") # hide
+nothing # hide
 ```
+
+![Vowel plot with ellipses](ellipse_vowel_plot.svg)
 
 Each of the data clouds in the scatter have an ellipse overlaid on them so as to contain 67% of the data. The ellipse calculation process is given in Friendly et al. (2013).
 
@@ -38,10 +52,15 @@ One final feature to point out is that the `vowelplot` function can also plot ju
 
 ```@example
 using Phonetics # hide
+using Plots # hide
 data = generateFormants(30, gender=[:w], seed=56) # hide
 vowelPlot(data.f1, data.f2, data.vowel, ell=true,
   meansOnly=true, addLabels=true, xlab="F1 (Hz)", ylab="F2 (Hz)")
+savefig("means_only_ellipse_vowel_plot.svg") # hide
+nothing # hide
 ```
+
+![Vowel plot with ellipses and markers only for mean values](means_only_ellipse_vowel_plot.svg)
 
 The labels are offset from the mean value a bit so as to not cover up the marker showing where the mean value is.
 
