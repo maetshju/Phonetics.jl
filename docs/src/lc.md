@@ -1,5 +1,7 @@
 # Lexical characteristics
 
+There are some functions to calculate common lexical characteristics of words. These characteristics are a reflection of how a word relates to all the other words in a language, that is, how they relate to all other words in the lexicon.
+
 ## Phonological neighborhood density
 
 Phonological neighborhood density, as described by Luce & Pisoni (1998), as a concept is a set of words that sound similar to each other. Vitevitch & Luce (2016) explain that it's common to operationalize this concept as the number of words that have a Levenshtein distance (minimal number of segment additions, subtractions, or substitutions to transform one word or string into another) of exactly 1 from the word in question.

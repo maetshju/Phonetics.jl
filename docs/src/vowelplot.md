@@ -1,8 +1,6 @@
 # Vowel plotting
 
-The function provided for plotting vowels diplays offers a variety of visualization techniques for displaying a two-dimensional plot for vowel tokens. Traditionally, it is F1 and F2 that are plotted, but any two pairs of data can be plotted, such as F2 and F3, F2-F1 and F3, etc.
-
-## Examples
+The function provided for plotting vowels diplays offers a variety of visualization techniques for displaying a two-dimensional plot for vowel tokens. Traditionally, it is F1 and F2 that are plotted, but any two pairs of data can be plotted, such as F2 and F3, F2-F1 and F3, etc. A traditional, vanilla vowel plot only requires three positional arguments, `f1`, `f2`, and `cats`. Other plotting arguments that the `Plots` package can accept will be passed through to the first call to `plot`.
 
 ```@example
 using Phonetics # hide
