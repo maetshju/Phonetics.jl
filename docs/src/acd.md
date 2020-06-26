@@ -19,6 +19,21 @@ The output value is the result of performing dynamic time warping on the `x` and
 
 As an implementation note, the distance metric used to compare the MFCC vectors is the squared Euclidean distance between two vectors.
 
+## Sequence averaging
+
+Kelley & Tucker (2018) also used the dynamic barycenter averaging (Petitjean et al., 2011) technique to create "average" acoustic representations of English words, in an attempt to better model the kind of acoustic representation a listener may be accessing when hearing a word (given that a listener has heard most words more than just once). The interface for calculating the average sequence is with the `avgseq` function.
+
+```@example
+using Phonetics # hide
+using Random
+rng = MersenneTwister(9)
+x = rand(rng, 1000)
+y = rand(rng, 3000)
+z = rand(rng, 10000)
+a = [Sound(x, 8000), Sound(y, 8000), Sound(z, 8000)]
+avgseq(a)
+```
+
 ## Acoustic distinctiveness
 
 Kelley (2018) and Kelley & Tucker (2018) introduced the concept of acoustic distinctiveness. It is how far away a word is, on average, from all the other words in a language. The `distinctiveness` function performs this calculation.
@@ -36,19 +51,30 @@ distinctiveness(a[1], a[2:3])
 
 The number is effectively an index of how acoustically unique a word is in a language.
 
-## Sequence averaging
+## Function documentation
 
-Kelley & Tucker (2018) also used the dynamic barycenter averaging (Petitjean et al., 2011) technique to create "average" acoustic representations of English words, in an attempt to better model the kind of acoustic representation a listener may be accessing when hearing a word (given that a listener has heard most words more than just once). The interface for calculating the average sequence is with the `avgseq` function.
+```@docs
+acdist(s1, s2; [method=:dtw, dist=SqEuclidean(), radius=10])
+```
 
-```@example
-using Phonetics # hide
-using Random
-rng = MersenneTwister(9)
-x = rand(rng, 1000)
-y = rand(rng, 3000)
-z = rand(rng, 10000)
-a = [Sound(x, 8000), Sound(y, 8000), Sound(z, 8000)]
-avgseq(a)
+```@docs
+acdist(s1::Sound, s2::Sound, rep=:mfcc; [method=:dtw, dist=SqEuclidean(), radius=10])
+```
+
+```@docs
+avgseq(S; [method=:dtw, dist=SqEuclidean(), radius=10, center=:medoid, dtwradius=nothing, progress=false])
+```
+
+```@docs
+ avgseq(S::Array{Sound}, rep=:mfcc; [method=:dtw, dist=SqEuclidean(), radius=10, center=:medoid, dtwradius=nothing, progress=false])
+```
+
+```@docs
+distinctiveness(s, corpus; [method=:dtw, radius=10, reduction=mean])
+```
+
+```@docs
+distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; [method=:dtw, radius=10, reduction=mean])
 ```
 
 ## References
