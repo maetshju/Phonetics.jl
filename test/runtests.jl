@@ -5,6 +5,8 @@ using StatsBase
 using DataFrames
 using Statistics
 using Random
+using DynamicAxisWarping
+using Distances
 
 @testset "Vowel space and density" begin
 
@@ -104,8 +106,11 @@ end
   y = rand(rng, 3000)
   z = rand(rng, 10000)
   a = [Sound(x, 8000), Sound(y, 8000), Sound(z, 8000)]
-  @test acdist(a[1], a[2]) ≈ 20478.541722315666
+  amfcc = Phonetics.sound2mfcc.(a)
+  @test acdist(a[1], a[2]) == dtw(amfcc[1], amfcc[2])[1]
   @test distinctiveness(a[1], a[2:3]) ≈ mean([acdist(a[1], a[2]), acdist(a[1], a[3])])
+  dtwr = maximum(size(s, 2) for s in amfcc)
+  @test avgseq(a) == dba(amfcc, DTW(dtwr, SqEuclidean()), init_center=amfcc[2], show_progress=false)[1]
 end
 
 const SAMPLE_CORPUS = [

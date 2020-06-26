@@ -73,7 +73,7 @@ function avgseq(S; method=:dtw, dist=SqEuclidean(), radius=10, center=:medoid, d
   elseif method == :fastdtw
     d = FastDTW(radius, dist)
   else
-    error("Unsupported method argument. Please consult documentation with ?avgseq")
+    error("Unsupported method argument.")
   end
 
   if center == :medoid
