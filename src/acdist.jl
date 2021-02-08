@@ -106,9 +106,9 @@ function avgseq(S::Array{Sound}, rep=:mfcc; method=:dtw, dist=SqEuclidean(), rad
 end
 
 """
-    distinctiveness(s, corpus; [method=:dtw, radius=10, reduction=mean])
+    distinctiveness(s, corpus; [method=:dtw, dist=SqEuclidean(), radius=10, reduction=mean])
 
-Calculates the acoustic distinctiveness of `s` given the corpus `corpus`. The `method` and `radius` arguments are passed into `acdist`. The `reduction` argument can be any function that reduces an iterable to one number, such as `mean`, `sum`, or `median`. 
+Calculates the acoustic distinctiveness of `s` given the corpus `corpus`. The `method`, `dist`, and `radius` arguments are passed into `acdist`. The `reduction` argument can be any function that reduces an iterable to one number, such as `mean`, `sum`, or `median`. 
 
 For more information, see Kelley (2018, September, How acoustic distinctiveness affects spoken word recognition: A pilot study, DOI: 10.7939/R39G5GV9Q) and Kelley & Tucker (2018, Using acoustic distance to quantify lexical competition, DOI: 10.7939/r3-wbhs-kr84).
   """
@@ -117,7 +117,7 @@ function distinctiveness(s, corpus; method=:dtw, dist=SqEuclidean(), radius=10, 
 end
 
 """
-    distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; [method=:dtw, radius=10, reduction=mean])
+    distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; [method=:dtw, dist=SqEuclidean(), radius=10, reduction=mean])
 
 Converts `s` and `corpus` to a representation specified by `rep`, then calculates the acoustic distinctiveness of `s` given `corpus`. Currently only `:mfcc` is supported for `rep`, using defaults from the `MFCC` package except that the first coefficient for each frame is removed and replaced with the sum of the log energy of the filterbank in that frame, as is standard in ASR.
 """
