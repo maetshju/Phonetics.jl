@@ -5,7 +5,7 @@ using DataFrames
 using Statistics
 
 """
-    acdist(s1, s2; [method=:dtw, dist=SqEuclidean(), radius=10]])
+    acdist(s1, s2; [method=:dtw, dist=SqEuclidean(), radius=10])
 
 Calculate the acoustic distance between `s1` and `s2` with `method` version of dynamic time warping and `dist` as the interior distance function. Using `method=:dtw` uses vanilla dynamic time warping, while `method=:fastdtw` uses the fast dtw approximation. Note that this is not a true mathematical distance metric because dynamic time warping does not necessarily satisfy the triangle inequality, nor does it guarantee the identity of indiscernibles.
 
@@ -106,18 +106,22 @@ function avgseq(S::Array{Sound}, rep=:mfcc; method=:dtw, dist=SqEuclidean(), rad
 end
 
 """
+    distinctiveness(s, corpus; [method=:dtw, radius=10, reduction=mean])
+
 Calculates the acoustic distinctiveness of `s` given the corpus `corpus`. The `method` and `radius` arguments are passed into `acdist`. The `reduction` argument can be any function that reduces an iterable to one number, such as `mean`, `sum`, or `median`. 
 
 For more information, see Kelley (2018, September, How acoustic distinctiveness affects spoken word recognition: A pilot study, DOI: 10.7939/R39G5GV9Q) and Kelley & Tucker (2018, Using acoustic distance to quantify lexical competition, DOI: 10.7939/r3-wbhs-kr84).
   """
-function distinctiveness(s, corpus; method=:dtw, radius=10, reduction=mean)
-  return reduction(map(x -> acdist(s, x, method=method, radius=radius), corpus))
+function distinctiveness(s, corpus; method=:dtw, dist=SqEuclidean(), radius=10, reduction=mean)
+  return reduction(map(x -> acdist(s, x, method=method, dist=dist, radius=radius), corpus))
 end
 
 """
+    distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; [method=:dtw, radius=10, reduction=mean])
+
 Converts `s` and `corpus` to a representation specified by `rep`, then calculates the acoustic distinctiveness of `s` given `corpus`. Currently only `:mfcc` is supported for `rep`, using defaults from the `MFCC` package except that the first coefficient for each frame is removed and replaced with the sum of the log energy of the filterbank in that frame, as is standard in ASR.
 """
-function distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; method=:dtw, radius=10, reduction=mean)
+function distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; method=:dtw, dist=SqEuclidean(), radius=10, reduction=mean)
 
   if rep == :mfcc
     s = sound2mfcc(s)
@@ -126,7 +130,7 @@ function distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; method=:dtw,
     error("Unsupported rep argument")
   end
 
-  return distinctiveness(s, corpus, method=method, radius=radius, reduction=reduction)
+  return distinctiveness(s, corpus, method=method, dist=dist, radius=radius, reduction=reduction)
 end
 
 function sound2mfcc(s::Sound; useFrameEngery=true, kw...)
