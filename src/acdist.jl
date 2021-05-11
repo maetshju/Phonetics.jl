@@ -16,14 +16,17 @@ Args
 * `s2` Features-by-time array of second sound to compare
 * `method` (keyword) Which method of dynamic time warping to use
 * `dist` (keyword) Any distance function implementing the `SemiMetric` interface from the `Distances` package
-* `radius` (keyword) The radius to use for the fast dtw method; argument unused when method=:dtw
+* `dtwradius` (keyword) maximum warping radius for vanilla dynamic timew warping; if no value passed, no warping constraint is used argument unused when method=:fastdtw
+* `fastradius` (keyword) The radius to use for the fast dtw method; argument unused when method=:dtw
 """
-function acdist(s1, s2; method=:dtw, dist=SqEuclidean(), radius=10)
+function acdist(s1, s2; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fastradius=10)
   
   if method == :dtw
-    return dtw(s1, s2, dist)[1]
+    if isnothing(dtwradius) dtwradius = max(size(s1, 2), size(s2, 2)) end
+    imin, imax = radiuslimits(dtwradius, size(s1, 2), size(s2, 2))
+    return dtw(s1, s2, dist, imin, imax)[1]
   elseif method == :fastdtw
-    return fastdtw(s1, s2, dist, radius)[1]
+    return fastdtw(s1, s2, dist, fastradius)[1]
   else
     error("Unsupported method argument.")
   end
@@ -34,7 +37,7 @@ end
 
 Convert `s1` and `s2` to a frequency representation specified by `rep`, then calculate acoustic distance between `s1` and `s2`. Currently only `:mfcc` is supported for `rep`, using defaults from the `MFCC` package except that the first coefficient for each frame is removed and replaced with the sum of the log energy of the filterbank in that frame, as is standard in ASR.
 """
-function acdist(s1::Sound, s2::Sound, rep=:mfcc; method=:dtw, dist=SqEuclidean(), radius=10)
+function acdist(s1::Sound, s2::Sound, rep=:mfcc; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fastradius=10)
 
   if rep == :mfcc
     r1 = sound2mfcc(s1)
@@ -43,7 +46,7 @@ function acdist(s1::Sound, s2::Sound, rep=:mfcc; method=:dtw, dist=SqEuclidean()
     error("Unsupported rep argument. Plesae consult documentation with ?acdist")
   end
 
-  return acdist(r1, r2, method=method, dist=dist, radius=radius)
+  return acdist(r1, r2, method=method, dist=dist, dtwradius=dtwradius, fastradius=fastradius)
 end
 
 """
@@ -62,7 +65,7 @@ Args
 * `dtwradius` (keyword) How far a time step can be mapped when comparing sequences; passed directly to `DTW` function from `DynamicAxisWarping`; if set to `nothing`, the length of the longest sequence will be used, effectively removing the radius restriction
 * `progress` Whether to show the progress coming from `dba`
 """
-function avgseq(S; method=:dtw, dist=SqEuclidean(), radius=10, center=:medoid, dtwradius=nothing, progress=false)
+function avgseq(S; method=:dtw, dist=SqEuclidean(), fastradius=10, center=:medoid, dtwradius=nothing, progress=false)
 
   if isnothing(dtwradius)
     dtwradius = maximum(size(s, 2) for s in S)
@@ -79,7 +82,7 @@ function avgseq(S; method=:dtw, dist=SqEuclidean(), radius=10, center=:medoid, d
   if center == :medoid
     D = zeros(length(S), length(S))
     for idx in CartesianIndices(D)
-      D[idx] = acdist(S[idx[1]], S[idx[2]], method=method, dist=dist, radius=radius)[1]
+      D[idx] = acdist(S[idx[1]], S[idx[2]], method=method, dist=dist, dtwradius=dtwradius, fastradius=fastradius)[1]
     end
     sums = vec(sum(D, dims=1))
     init = S[argmin(sums)]
@@ -95,14 +98,14 @@ end
 
 Convert the `Sound` objects in `S` to a representation designated by `rep`, then find the average sequence of them. Currently only `:mfcc` is supported for `rep`, using defaults from the `MFCC` package except that the first coefficient for each frame is removed and replaced with the sum of the log energy of the filterbank in that frame, as is standard in ASR.
 """
-function avgseq(S::Array{Sound}, rep=:mfcc; method=:dtw, dist=SqEuclidean(), radius=10, center=:medoid, dtwradius=nothing, progress=false)
+function avgseq(S::Array{Sound}, rep=:mfcc; method=:dtw, dist=SqEuclidean(), fastradius=10, center=:medoid, dtwradius=nothing, progress=false)
   if rep == :mfcc
     S = sound2mfcc.(S)
   else
     error("Unsupported rep argument. Please consult documentation with ?acdist")
   end
 
-  return avgseq(S, method=method, dist=dist, radius=radius, center=center, dtwradius=dtwradius, progress=false)
+  return avgseq(S, method=method, dist=dist, fastradius=fastradius, center=center, dtwradius=dtwradius, progress=false)
 end
 
 """
@@ -112,8 +115,8 @@ Calculates the acoustic distinctiveness of `s` given the corpus `corpus`. The `m
 
 For more information, see Kelley (2018, September, How acoustic distinctiveness affects spoken word recognition: A pilot study, DOI: 10.7939/R39G5GV9Q) and Kelley & Tucker (2018, Using acoustic distance to quantify lexical competition, DOI: 10.7939/r3-wbhs-kr84).
   """
-function distinctiveness(s, corpus; method=:dtw, dist=SqEuclidean(), radius=10, reduction=mean)
-  return reduction(map(x -> acdist(s, x, method=method, dist=dist, radius=radius), corpus))
+function distinctiveness(s, corpus; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fastradius=10, reduction=mean)
+  return reduction(map(x -> acdist(s, x, method=method, dist=dist, dtwradius=nothing, fastradius=fastradius), corpus))
 end
 
 """
@@ -121,7 +124,7 @@ end
 
 Converts `s` and `corpus` to a representation specified by `rep`, then calculates the acoustic distinctiveness of `s` given `corpus`. Currently only `:mfcc` is supported for `rep`, using defaults from the `MFCC` package except that the first coefficient for each frame is removed and replaced with the sum of the log energy of the filterbank in that frame, as is standard in ASR.
 """
-function distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; method=:dtw, dist=SqEuclidean(), radius=10, reduction=mean)
+function distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fastradius=10, reduction=mean)
 
   if rep == :mfcc
     s = sound2mfcc(s)
@@ -130,7 +133,7 @@ function distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; method=:dtw,
     error("Unsupported rep argument")
   end
 
-  return distinctiveness(s, corpus, method=method, dist=dist, radius=radius, reduction=reduction)
+  return distinctiveness(s, corpus, method=method, dist=dist, dtwradius=nothing, fastradius=fastradius, reduction=reduction)
 end
 
 function sound2mfcc(s::Sound; useFrameEngery=true, kw...)
