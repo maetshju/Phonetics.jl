@@ -24,6 +24,7 @@ function acdist(s1, s2; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fast
   if method == :dtw
     if isnothing(dtwradius) dtwradius = max(size(s1, 2), size(s2, 2)) end
     imin, imax = radiuslimits(dtwradius, size(s1, 2), size(s2, 2))
+    if last(imax) < size(s2, 2) imax[end] = size(s2, 2)
     return dtw(s1, s2, dist, imin, imax)[1]
   elseif method == :fastdtw
     return fastdtw(s1, s2, dist, fastradius)[1]
