@@ -117,7 +117,7 @@ Calculates the acoustic distinctiveness of `s` given the corpus `corpus`. The `m
 For more information, see Kelley (2018, September, How acoustic distinctiveness affects spoken word recognition: A pilot study, DOI: 10.7939/R39G5GV9Q) and Kelley & Tucker (2018, Using acoustic distance to quantify lexical competition, DOI: 10.7939/r3-wbhs-kr84).
   """
 function distinctiveness(s, corpus; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fastradius=10, reduction=mean)
-  return reduction(map(x -> acdist(s, x, method=method, dist=dist, dtwradius=nothing, fastradius=fastradius), corpus))
+  return reduction(map(x -> acdist(s, x, method=method, dist=dist, dtwradius=dtwradius, fastradius=fastradius), corpus))
 end
 
 """
@@ -134,7 +134,7 @@ function distinctiveness(s::Sound, corpus::Array{Sound}, rep=:mfcc; method=:dtw,
     error("Unsupported rep argument")
   end
 
-  return distinctiveness(s, corpus, method=method, dist=dist, dtwradius=nothing, fastradius=fastradius, reduction=reduction)
+  return distinctiveness(s, corpus, method=method, dist=dist, dtwradius=dtwradius, fastradius=fastradius, reduction=reduction)
 end
 
 function sound2mfcc(s::Sound; useFrameEngery=true, kw...)
