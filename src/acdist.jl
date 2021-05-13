@@ -22,7 +22,11 @@ Args
 function acdist(s1, s2; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fastradius=10)
   
   if method == :dtw
-    if isnothing(dtwradius) dtwradius = max(size(s1, 2), size(s2, 2)) end
+    if isnothing(dtwradius)
+      dtwradius = max(size(s1, 2), size(s2, 2))
+    elseif size(s2, 2) < size(s1, 2)
+      s1, s2 = s2, s1
+    end
     imin, imax = radiuslimits(dtwradius, size(s1, 2), size(s2, 2))
     if last(imax) < size(s2, 2) imax[end] = size(s2, 2) end
     return dtw(s1, s2, dist, imin, imax)[1]
