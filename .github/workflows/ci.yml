@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        julia-version: ['1.0', '1', 'nightly']
+        julia-version: ['1', 'nightly']
         julia-arch: [x64, x86]
         os: [ubuntu-latest]
             
@@ -23,3 +23,4 @@ jobs:
       - run: sudo apt-get install python3-scipy qt5-default
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
+        continue-on-error: ${{ matrix.version == 'nightly' }}
