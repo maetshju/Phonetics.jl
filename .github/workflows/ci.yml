@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-latest]
             
     steps:
-      - uses: julia-actions/setupjulia@v1
+      - uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.julia-version }}
       - run: sudo apt-get install python3-scipy qt5-default
