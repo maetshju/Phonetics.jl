@@ -1,0 +1,24 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Test and docs
+
+# Controls when the action will run. 
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:        
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        julia-version: ['1.0', '1', 'nightly']
+        julia-arch: [x64, x86]
+        os: [ubuntu-latest]
+            
+    steps:
+      - uses: julia-actions/setupjulia@v1
+        with:
+          version: ${{ matrix.julia-version }}
+      - run: sudo apt-get install python3-scipy qt5-default
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
