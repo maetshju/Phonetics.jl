@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/maetshju/Phonetics.jl/blob/master/.github/workflows/ci.yml/badge.svg)
+[![Build Status](https://github.com/maetshju/Phonetics.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/maetshju/Phonetics.jl/actions/workflows/ci.yml)
 
 [![codecov](https://codecov.io/gh/maetshju/Phonetics.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/maetshju/Phonetics.jl)
 
