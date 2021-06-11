@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Test and coverage
+name: Test, coverage, and docs
 
 # Controls when the action will run. 
 on: [push, pull_request]
@@ -28,14 +28,6 @@ jobs:
         with:
           file: lcov.info
           
-name: Documenter
-on:
-  push:
-    branches: [master]
-    tags: [v*]
-  pull_request:
-
-jobs:
   Documenter:
     name: Documentation
     runs-on: ubuntu-latest
