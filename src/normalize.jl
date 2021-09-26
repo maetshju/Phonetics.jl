@@ -45,7 +45,7 @@ function neareyI(f1, f2, vowel, speaker)
   lgmnI(x) = x .- mean(x)
 
   # apply the formant INTRINSIC normalization by group and recombine
-  d = combine([:f1, :f2, :vowel, :rowN] => (x, y, v, r) -> (f1=lgmnI(x), f2=lgmnI(y), vowel=v, rowN=r), groups)
+  d = combine(groups, [:f1, :f2, :vowel, :rowN] => ((x, y, v, r) -> (f1=lgmnI(x), f2=lgmnI(y), vowel=v, rowN=r)) => AsTable)
   sort!(d, :rowN)
   d = d[:, [:f1, :f2, :vowel, :speaker]]
   return d
@@ -75,7 +75,7 @@ function neareyE(f1, f2, vowel, speaker)
   lgmnE(x, y) = x .- mean([x; y])
 
   # apply the formant EXTRINSIC normalization by group and recombine
-  d = combine([:f1, :f2, :vowel, :rowN] => (x, y, v, r) -> (f1=lgmnE(x, y), f2=lgmnE(y, x), vowel=v, rowN=r), groups)
+  d = combine(groups, [:f1, :f2, :vowel, :rowN] => ((x, y, v, r) -> (f1=lgmnE(x, y), f2=lgmnE(y, x), vowel=v, rowN=r)) => AsTable)
   sort!(d, :rowN)
   d = d[:, [:f1, :f2, :vowel, :speaker]]
   return d

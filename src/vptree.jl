@@ -23,34 +23,34 @@ numerical data as well.
 """
 mutable struct TextVPTree{T}
     pivot::T
-    d::Function
+    d
     r::Number
     left::TextVPTree{T}
     right::TextVPTree{T}
 
     """
-        TextVPTree{T}(pivot::T, d::Function) where T
+        TextVPTree{T}(pivot::T, d) where T
 
     Inner constructor for a `TextVPTree`. There are two methods. The first
     leaves `r` undefined, as would be the case for a leaf node. The other takes
     a value for `r`, which would be used for nodes that aren't leaf nodes.
     """
-    function TextVPTree{T}(pivot::T, d::Function) where T
+    function TextVPTree{T}(pivot::T, d) where T
         new(pivot, d)
     end
 
-    function TextVPTree{T}(pivot::T, d::Function, r::Number) where T
+    function TextVPTree{T}(pivot::T, d, r::Number) where T
         new(pivot, d, r)
     end
 end
 
 """
-    TextVPTree(items::Array, d::Function)
+    TextVPTree(items::Array, d)
 
 Outer constructor for a `TextVPTree`. Takes in an array of items `items` and a
 distance function `d` and proceeds to build a vantage-point tree from them.
 """
-function TextVPTree(items::Array, d::Function)
+function TextVPTree(items::Array, d)
 
     if length(items) == 1 # leaf node
         @inbounds return TextVPTree{typeof(items[1])}(items[1], d)
