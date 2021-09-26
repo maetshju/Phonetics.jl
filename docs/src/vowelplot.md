@@ -5,7 +5,7 @@ The function provided for plotting vowels diplays offers a variety of visualizat
 ```@example
 using Phonetics # hide
 using Plots # hide
-data = generateFormants(30, gender=[:w], seed=56) # hide
+data = generateFormants(30, gender=["w"], seed=56) # hide
 vowelPlot(data.f1, data.f2, data.vowel, xlab="F1 (Hz)", ylab="F2 (Hz)")
 savefig("vanilla_vowel_plot.svg") # hide
 nothing # hide
@@ -19,7 +19,7 @@ For those inclined to use the alternate axes configuration with F2 decreasing on
 ```@example
 using Phonetics # hide
 using Plots # hide
-data = generateFormants(30, gender=[:w], seed=56) # hide
+data = generateFormants(30, gender=["w"], seed=56) # hide
 vowelPlot(data.f2, data.f1, data.vowel,
   xflip=true, yflip=true, xlab="F2 (Hz)", ylab="F1 (Hz)")
 savefig("alt_axes_vowel_plot.svg") # hide
@@ -35,7 +35,7 @@ The `vowelPlot` function also allows for ellipses to be plotted around the value
 ```@example
 using Phonetics # hide
 using Plots # hide
-data = generateFormants(30, gender=[:w], seed=56) # hide
+data = generateFormants(30, gender=["w"], seed=56) # hide
 vowelPlot(data.f1, data.f2, data.vowel, ell=true, ellPercent=0.67,
   xlab="F1 (Hz)", ylab="F2 (Hz)")
 savefig("ellipse_vowel_plot.svg") # hide
@@ -51,7 +51,7 @@ One final feature to point out is that the `vowelplot` function can also plot ju
 ```@example
 using Phonetics # hide
 using Plots # hide
-data = generateFormants(30, gender=[:w], seed=56) # hide
+data = generateFormants(30, gender=["w"], seed=56) # hide
 vowelPlot(data.f1, data.f2, data.vowel, ell=true,
   meansOnly=true, addLabels=true, xlab="F1 (Hz)", ylab="F2 (Hz)")
 savefig("means_only_ellipse_vowel_plot.svg") # hide

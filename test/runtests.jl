@@ -18,17 +18,17 @@ end
 
 @testset "Random formant generation" begin
 
-  dat = generateFormants(10^7, cats=[:uw], gender=[:w])
+  dat = generateFormants(10^7, cats=["uw"], gender=["w"])
   datμ = mean(Array(dat[:, 1:2]), dims=1)
   @test isapprox(datμ, [459.67 1105.52], atol=1)
 
-  dat = generateFormants(10^7, cats=[:aa], gender=[:w])
+  dat = generateFormants(10^7, cats=["aa"], gender=["w"])
   datμ = mean(Array(dat[:, 1:2]), dims=1)
   @test isapprox(datμ, [916.36 1525.83], atol=1)
 
-  dat = generateFormants(30, cats=[:iy, :aa], gender=[:w, :m])
-  @test dat.vowel == repeat([:iy, :aa], inner=60)
-  @test dat.gender == repeat([:w, :m], inner=30, outer=2)
+  dat = generateFormants(30, cats=["iy", "aa"], gender=["w", "m"])
+  @test dat.vowel == repeat(["iy", "aa"], inner=60)
+  @test dat.gender == repeat(["w", "m"], inner=30, outer=2)
 end
 
 @testset "Normalization" begin
@@ -39,11 +39,11 @@ end
   lobCustom = copy(dat)
   rename!(lobCustom, :gender => :speaker)
 
-  lobCustom[lobCustom.speaker .== :m, :f1] = zscore(lobCustom[lobCustom.speaker .== :m, :f1])
-  lobCustom[lobCustom.speaker .== :w, :f1] = zscore(lobCustom[lobCustom.speaker .== :w, :f1])
+  lobCustom[lobCustom.speaker .== "m", :f1] = zscore(lobCustom[lobCustom.speaker .== "m", :f1])
+  lobCustom[lobCustom.speaker .== "w", :f1] = zscore(lobCustom[lobCustom.speaker .== "w", :f1])
 
-  lobCustom[lobCustom.speaker .== :m, :f2] = zscore(lobCustom[lobCustom.speaker .== :m, :f2])
-  lobCustom[lobCustom.speaker .== :w, :f2] = zscore(lobCustom[lobCustom.speaker .== :w, :f2])
+  lobCustom[lobCustom.speaker .== "m", :f2] = zscore(lobCustom[lobCustom.speaker .== "m", :f2])
+  lobCustom[lobCustom.speaker .== "w", :f2] = zscore(lobCustom[lobCustom.speaker .== "w", :f2])
 
   lobFunc = lobanov(dat.f1, dat.f2, dat.vowel, dat.gender)
   # check for approximate equality because sum and related functions
@@ -58,15 +58,15 @@ end
   nICustom = copy(dat)
   rename!(nICustom, :gender => :speaker)
 
-  mf1 = nICustom[nICustom.speaker .== :m, :f1]
-  nICustom[nICustom.speaker .== :m, :f1] = log.(mf1) .- mean(log.(mf1))
-  wf1 = nICustom[nICustom.speaker .== :w, :f1]
-  nICustom[nICustom.speaker .== :w, :f1] = log.(wf1) .- mean(log.(wf1))
+  mf1 = nICustom[nICustom.speaker .== "m", :f1]
+  nICustom[nICustom.speaker .== "m", :f1] = log.(mf1) .- mean(log.(mf1))
+  wf1 = nICustom[nICustom.speaker .== "w", :f1]
+  nICustom[nICustom.speaker .== "w", :f1] = log.(wf1) .- mean(log.(wf1))
 
-  mf2 = nICustom[nICustom.speaker .== :m, :f2]
-  nICustom[nICustom.speaker .== :m, :f2] = log.(mf2) .- mean(log.(mf2))
-  wf2 = nICustom[nICustom.speaker .== :w, :f2]
-  nICustom[nICustom.speaker .== :w, :f2] = log.(wf2) .- mean(log.(wf2))
+  mf2 = nICustom[nICustom.speaker .== "m", :f2]
+  nICustom[nICustom.speaker .== "m", :f2] = log.(mf2) .- mean(log.(mf2))
+  wf2 = nICustom[nICustom.speaker .== "w", :f2]
+  nICustom[nICustom.speaker .== "w", :f2] = log.(wf2) .- mean(log.(wf2))
   
   nIFunc = neareyI(dat.f1, dat.f2, dat.vowel, dat.gender)
   @test nICustom.f1 ≈ nIFunc.f1
@@ -78,19 +78,19 @@ end
 
   rename!(nECustom, :gender => :speaker)
 
-  mf1 = nECustom[nECustom.speaker .== :m, :f1]
-  mfall = [mf1; nECustom[nECustom.speaker .== :m, :f2]]
-  nECustom[nECustom.speaker .== :m, :f1] = log.(mf1) .- mean(log.(mfall))
+  mf1 = nECustom[nECustom.speaker .== "m", :f1]
+  mfall = [mf1; nECustom[nECustom.speaker .== "m", :f2]]
+  nECustom[nECustom.speaker .== "m", :f1] = log.(mf1) .- mean(log.(mfall))
 
-  wf1 = nECustom[nECustom.speaker .== :w, :f1]
-  wfall = [wf1; nECustom[nECustom.speaker .== :w, :f2]]
-  nECustom[nECustom.speaker .== :w, :f1] = log.(wf1) .- mean(log.(wfall))
+  wf1 = nECustom[nECustom.speaker .== "w", :f1]
+  wfall = [wf1; nECustom[nECustom.speaker .== "w", :f2]]
+  nECustom[nECustom.speaker .== "w", :f1] = log.(wf1) .- mean(log.(wfall))
 
-  mf2 = nECustom[nECustom.speaker .== :m, :f2]
-  nECustom[nECustom.speaker .== :m, :f2] = log.(mf2) .- mean(log.(mfall))
+  mf2 = nECustom[nECustom.speaker .== "m", :f2]
+  nECustom[nECustom.speaker .== "m", :f2] = log.(mf2) .- mean(log.(mfall))
 
-  wf2 = nECustom[nECustom.speaker .== :w, :f2]
-  nECustom[nECustom.speaker .== :w, :f2] = log.(wf2) .- mean(log.(wfall))
+  wf2 = nECustom[nECustom.speaker .== "w", :f2]
+  nECustom[nECustom.speaker .== "w", :f2] = log.(wf2) .- mean(log.(wfall))
 
   nEFunc = neareyE(dat.f1, dat.f2, dat.vowel, dat.gender)
   @test nECustom.f1 ≈ nEFunc.f1

@@ -10,8 +10,8 @@ Let's start by creating some sample sounds to work with. You could also load in 
 using Phonetics # hide
 using Random
 rng = MersenneTwister(9)
-x = rand(rng, 1000)
-y = rand(rng, 3000)
+x = rand(rng, 1, 1000)
+y = rand(rng, 1, 3000)
 acdist(x, y)
 ```
 
