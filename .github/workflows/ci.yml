@@ -28,7 +28,6 @@ jobs:
       - uses: codecov/codecov-action@v1
         with:
           file: lcov.info
-      - run: julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
       - uses: julia-actions/julia-docdeploy@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
