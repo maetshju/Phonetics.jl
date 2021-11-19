@@ -211,8 +211,9 @@ function VowelSpace(formants::Formants; temporalNorm=true)
 
   h1poly = Polygon2D([Point(Float64.(hull.points[i,:])...) for i in hull.vertices]...)
 
+  den_max = maximum(densityGrid)
   for i in CartesianIndices(densityGrid)
-    densityGrid[i] / maximum(densityGrid) < 0.25 && continue
+    densityGrid[i] / den_max < 0.25 && continue
     currX = f1vals[i[1]]
     currY = f2vals[i[2]]
     currPt = Point2D(currX, currY)
@@ -268,7 +269,7 @@ function createDensityGrid(formants, gridInterval=0.01, densityRadius=0.05)
 
   densityGrid = zeros(nXvals, nYvals)
 
-  for i=1:size(densityGrid, 1)
+  for i in 1:size(densityGrid, 1)
     xVal = minF1 + (i-1)*gridInterval
     for j=1:size(densityGrid, 2)
       yVal = minF2 + (j-1)*gridInterval
