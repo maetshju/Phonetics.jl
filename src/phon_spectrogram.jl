@@ -34,5 +34,5 @@ function phonspec(s::Vector, fs; pre_emph=0.97, col=:magma, style=:broadband, db
 	spec = spectrogram(s, n, nov, fs=fs, window = n -> kaiser(n, 2), nfft=nfft)
 	spec_mx = maximum(spec.power)
 	db = 10 .* log10.(spec.power ./ spec_mx)
-	heatmap(spec.time, spec.freq, db, color=cgrad(col), ylim=(0, 5000), clim=(-dbr, 0), size=size)
+	heatmap(spec.time, spec.freq, db, color=cgrad(col), ylim=(0, 5000), clim=(-dbr, 0), size=size, xlab="Time (s)", ylab="Frequency (Hz)")
 end
