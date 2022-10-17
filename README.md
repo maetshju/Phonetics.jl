@@ -4,7 +4,7 @@
 
 [![docs](https://img.shields.io/badge/docs-release-green)](https://maetshju.github.io/Phonetics.jl)
 
-<img src="imgs/logo.svg" width="100" alt="Phonetics.jl logo: A capital P with a sine wave traveling through it">
+<img src="imgs/logo.svg" width="150" alt="Phonetics.jl logo: A capital P with a sine wave traveling through it">
 
 Currently under development. Some function interfaces may break from time to time while in an alpha-release state.
 
@@ -18,7 +18,7 @@ Phonetics.jl is a collection of functions that are useful for processing phoneti
 
 As an example, a recording of the sentence "I want a spectrogram" can be plotted with the following bit of code:
 
-```
+```julia
 using Phonetics
 using WAV
 s, fs = wavread("iwantaspectrogram.wav")
