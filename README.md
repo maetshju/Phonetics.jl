@@ -2,10 +2,9 @@
 
 [![codecov](https://codecov.io/gh/maetshju/Phonetics.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/maetshju/Phonetics.jl)
 
-
-<img src="imgs/logo.svg" width="500" alt="Phonetics.jl logo: A capital P with a sine wave traveling through it>
-
 [![docs](https://img.shields.io/badge/docs-release-green)](https://maetshju.github.io/Phonetics.jl)
+
+<img src="imgs/logo.svg" width="100" alt="Phonetics.jl logo: A capital P with a sine wave traveling through it">
 
 Currently under development. Some function interfaces may break from time to time while in an alpha-release state.
 
