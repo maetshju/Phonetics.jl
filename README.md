@@ -26,4 +26,4 @@ s = vec(s)
 phonspec(s, fs)
 ```
 
-![A spectrogram of the phrase "I want a spectrogram"](imgs/iwantaspectrogram.svg | width=900)
+![A spectrogram of the phrase "I want a spectrogram"](imgs/iwantaspectrogram.svg)
