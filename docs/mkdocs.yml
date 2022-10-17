@@ -24,3 +24,4 @@ pages:
   - Phonological neighborhood density: pnd.md
   - Uniqueness point: upt.md
   - Phonotactic probability: phnprb.md
+  - Spectrograms: phon_spectrogram.md
