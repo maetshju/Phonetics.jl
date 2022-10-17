@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         julia-version: ['1.6', '1']
-        julia-arch: x64
+        julia-arch: [x64]
         os: [ubuntu-latest, windows-latest, macOS-latest]
       fail-fast: false
             
