@@ -3,7 +3,7 @@ using Documenter, Phonetics
 ENV["GKSwstype"] = "100"
 
 makedocs(sitename = "Phonetics.jl",
-         pages = ["index.md", "vowelplot.md", "acd.md", "lc.md", "textvptree.md"],
+         pages = ["index.md", "vowelplot.md", "acd.md", "lc.md", "textvptree.md", "phon_spectrogram.md"],
          repo = "https://github.com/maetshju/Phonetics.jl")
 
 deploydocs(
