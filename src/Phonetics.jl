@@ -18,6 +18,9 @@ export acdist, avgseq, distinctiveness, sound2mfcc
 include("util.jl")
 export generateFormants
 
+include("phon_spectrogram.jl")
+export phonspec
+
 include("upt.jl")
 include("vptree.jl")
 include("pnd.jl")
