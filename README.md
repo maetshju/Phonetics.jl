@@ -2,7 +2,8 @@
 
 [![codecov](https://codecov.io/gh/maetshju/Phonetics.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/maetshju/Phonetics.jl)
 
-![Phonetics.jl logo: A capital P with a sine wave traveling through it](imgs/logo.svg)
+
+<img src="imgs/logo.svg" width=500 alt="Phonetics.jl logo: A capital P with a sine wave traveling through it />
 
 [![docs](https://img.shields.io/badge/docs-release-green)](https://maetshju.github.io/Phonetics.jl)
 
@@ -26,4 +27,4 @@ s = vec(s)
 phonspec(s, fs)
 ```
 
-![A spectrogram of the phrase "I want a spectrogram"](imgs/iwantaspectrogram.svg)
+![A spectrogram of the phrase "I want a spectrogram"](imgs/iwantaspectrogram.png)
