@@ -26,17 +26,14 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 WAV = "8149f6b0-98f6-5db9-b78f-408fbbb8ef88"
 
-[extras]
-HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
-
 [compat]
-julia = "1.6 - 1.8"
 DataFrames = "1.4"
 DataStructures = "0.18"
 Distances = "0.10"
-Distributions  = "0.25"
+Distributions = "0.25"
 DynamicAxisWarping = "0.4"
-GeometricalPredicates  = "0.4"
+GeometricalPredicates = "0.4"
+MFCC = "0.3"
 Measures = "0.3"
 Plots = "1.34, 1.35"
 ProgressBars = "1.4"
@@ -44,3 +41,7 @@ ProgressMeter = "1.7"
 QHull = "0.2"
 StatsBase = "0.33"
 WAV = "1.2"
+julia = "1.6 - 1.8"
+
+[extras]
+HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
