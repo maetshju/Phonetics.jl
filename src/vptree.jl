@@ -66,8 +66,8 @@ function TextVPTree(items::Array, d)
     r = median(distances)
 
     # Assign items to left and right subtrees
-    S1 = Vector()
-    S2 = Vector()
+    S1 = Vector{eltype(items)}()
+    S2 = Vector{eltype(items)}()
     for (item, dist) in zip(items, distances)
         if dist < r
             push!(S1, item)
@@ -103,11 +103,11 @@ A `Vector` of items that are within the given radius `epsilon`
 """
 function radiusSearch(tree::TextVPTree, query, epsilon)
 
-    results = Vector()
     d = tree.d
     r = isdefined(tree, :r) ? tree.r : -1
     p = tree.pivot
     q = query
+	results = Vector{typeof(p)}()
 
     # add root node if possible
     if q != p && d(q, p) <= epsilon
@@ -122,11 +122,11 @@ function radiusSearch(tree::TextVPTree, query, epsilon)
     # check if we need to recurse into left and right subtrees using
     # inequalities from the implementation text
     if isdefined(tree, :left) && max(d(q, p) - r, 0) <= epsilon
-        results = vcat(results, radiusSearch(tree.left, query, epsilon))
+		append!(results, radiusSearch(tree.left, query, epsilon))
     end
 
     if isdefined(tree, :right) && max(r - d(q, p), 0) <= epsilon
-        results = vcat(results, radiusSearch(tree.right, query, epsilon))
+		append!(results, radiusSearch(tree.right, query, epsilon))
     end
 
     return results
