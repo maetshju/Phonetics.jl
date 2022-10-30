@@ -122,12 +122,10 @@ function radiusSearch(tree::TextVPTree, query, epsilon)
     # check if we need to recurse into left and right subtrees using
     # inequalities from the implementation text
     if isdefined(tree, :left) && max(d(q, p) - r, 0) <= epsilon
-        # results = vcat(results, radiusSearch(tree.left, query, epsilon))
 		append!(results, radiusSearch(tree.left, query, epsilon))
     end
 
     if isdefined(tree, :right) && max(r - d(q, p), 0) <= epsilon
-        # results = vcat(results, radiusSearch(tree.right, query, epsilon))
 		append!(results, radiusSearch(tree.right, query, epsilon))
     end
 
