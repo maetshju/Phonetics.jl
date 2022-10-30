@@ -12,10 +12,10 @@ Please note that the MFCC module is effectively a simple static link to the sour
 
 The license for the `Phonetics.jl` project as a whole is given in the `LICENSE` file in the root folder. Please note that statically including the `MFCC.jl` code is currently intended as a stopgap while version compatiblity is resolved in `MFCC.jl` so that dynamic linking of it via the package manager can be retinroduced.
 
-`Phonetics.jl` is currently unregistered. Install with
+`Phonetics.jl` can be installed with
 
 ```julia
-] add https://github.com/maetshju/phonetics.jl
+] add Phonetics
 ```
 
 Phonetics.jl is a collection of functions that are useful for processing phonetic data. "Phonetic data" is a term used in a broad sense to include, for example, transcriptions, sound files, and acoustic measurements like formant values. Functions are added to this package over time. Most functions are described in the documentation.
@@ -31,3 +31,5 @@ phonspec(s, fs)
 ```
 
 ![A spectrogram of the phrase "I want a spectrogram"](imgs/iwantaspectrogram.png)
+
+If you have questions about the package, please feel free to use [the Discussions feature](https://github.com/maetshju/Phonetics.jl/discussions) on this repo.
