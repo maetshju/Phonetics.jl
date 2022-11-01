@@ -20,7 +20,7 @@ Args
 * `dbr` The dynamic range; all frequencies that are `dbr` decibels quieter than the loudest frequency will not be displayed
 * `size` Size of plot in pixels; passed to `heatmap` call
 """
-function phonspec(s::Vector, fs; pre_emph=0.97, col=:magma, style=:broadband, dbr=55, size=(600, 400))
+function phonspec(s::Vector, fs; pre_emph=0.97, col=:inferno, style=:broadband, dbr=55, size=(600, 400))
 	pre_emph_filt = PolynomialRatio([1, -pre_emph], [1])
 	s = filt(pre_emph_filt, s)
 	if style == :broadband
