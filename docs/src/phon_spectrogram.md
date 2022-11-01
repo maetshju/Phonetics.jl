@@ -22,7 +22,7 @@ using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
 using Plots
-phonspec(s, fs, col=:gist_yarg)
+phonspec(s, fs, col=:binary)
 ```
 
 A narrowband style spectrogram can be plotted using the `style` argument:
