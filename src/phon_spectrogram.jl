@@ -2,7 +2,7 @@ using DSP
 using Plots
 
 """
-	phonspec(s, fs; pre_emph=0.97, col=:magma, style=:broadband, dbr=55, size=(600, 400))
+	phonspec(s, fs; pre_emph=0.97, col=:magma, style=:broadband, dbr=55, size=(600, 400), kw...)
 	
 Rudimentary functionality to plot a spectrogram, with parameters familiar to phoneticians.
 Includes a pre-emphasis routine which helps increase the intensity of the
@@ -19,8 +19,9 @@ Args
 * `style` Either `:broadband` or `:narrowband`; will affect the window length and window stride
 * `dbr` The dynamic range; all frequencies that are `dbr` decibels quieter than the loudest frequency will not be displayed
 * `size` Size of plot in pixels; passed to `heatmap` call
+* `args...` extra named parameters to pass to `heatmap`
 """
-function phonspec(s::Vector, fs; pre_emph=0.97, col=:inferno, style=:broadband, dbr=55, size=(600, 400))
+function phonspec(s::Vector, fs; pre_emph=0.97, col=:inferno, style=:broadband, dbr=55, size=(600, 400), ylim=(0, 5000), kw...)
 	pre_emph_filt = PolynomialRatio([1, -pre_emph], [1])
 	s = filt(pre_emph_filt, s)
 	if style == :broadband
@@ -34,5 +35,5 @@ function phonspec(s::Vector, fs; pre_emph=0.97, col=:inferno, style=:broadband, 
 	spec = spectrogram(s, n, nov, fs=fs, window = n -> kaiser(n, 2), nfft=nfft)
 	spec_mx = maximum(spec.power)
 	db = 10 .* log10.(spec.power ./ spec_mx)
-	heatmap(spec.time, spec.freq, db, color=cgrad(col), ylim=(0, 5000), clim=(-dbr, 0), size=size, xlab="Time (s)", ylab="Frequency (Hz)")
+	heatmap(spec.time, spec.freq, db; color=cgrad(col), ylim=ylim, clim=(-dbr, 0), size=size, xlab="Time (s)", ylab="Frequency (Hz)", kw...)
 end
