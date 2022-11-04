@@ -15,13 +15,13 @@ Args
 * `s` A vector containing the samples of a sound
 * `fs` Sampling frequency of `s` in Hz
 * `pre_emph` The α coefficient for pre-emmphasis; default value of 0.97 corresponds to a cutoff frequency of approximately 213 Hz before the 6 dB / octave increase begins
-* `col` Color scheme for the spectrogram
+* `col` Color scheme for the spectrogram; will be passed to `cgrad`
 * `style` Either `:broadband` or `:narrowband`; will affect the window length and window stride
-* `dbr` The dynamic range; all frequencies that are `dbr` decibels quieter than the loudest frequency will not be displayed
+* `dbr` The dynamic range; all frequencies that are `dbr` decibels quieter than the loudest frequency will not be displayed; will specify the `clim` argument
 * `size` Size of plot in pixels; passed to `heatmap` call
 * `args...` extra named parameters to pass to `heatmap`
 """
-function phonspec(s::Vector, fs; pre_emph=0.97, col=:inferno, style=:broadband, dbr=55, size=(600, 400), ylim=(0, 5000), kw...)
+function phonspec(s::Vector, fs; pre_emph=0.97, col=:inferno, style=:broadband, dbr=55, size=(600, 400), ylim=(0, 5000), xlab="Time (s)", ylab="Frequency (Hz)", kw...)
 	pre_emph_filt = PolynomialRatio([1, -pre_emph], [1])
 	s = filt(pre_emph_filt, s)
 	if style == :broadband
@@ -35,5 +35,5 @@ function phonspec(s::Vector, fs; pre_emph=0.97, col=:inferno, style=:broadband, 
 	spec = spectrogram(s, n, nov, fs=fs, window = n -> kaiser(n, 2), nfft=nfft)
 	spec_mx = maximum(spec.power)
 	db = 10 .* log10.(spec.power ./ spec_mx)
-	heatmap(spec.time, spec.freq, db; color=cgrad(col), ylim=ylim, clim=(-dbr, 0), size=size, xlab="Time (s)", ylab="Frequency (Hz)", kw...)
+	heatmap(spec.time, spec.freq, db; color=cgrad(col), ylim=ylim, clim=(-dbr, 0), size=size, xlab=xlab, ylab=ylab, kw...)
 end
