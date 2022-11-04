@@ -27,7 +27,7 @@ function acdist(s1, s2; method=:dtw, dist=SqEuclidean(), dtwradius=nothing, fast
     elseif size(s2, 2) < size(s1, 2)
       s1, s2 = s2, s1
     end
-    imin, imax = radiuslimits(dtwradius, size(s1, 2), size(s2, 2))
+    imin, imax = classic_radius_limits(dtwradius, size(s1, 2), size(s2, 2))
     if last(imax) < size(s2, 2) imax[end] = size(s2, 2) end
     return dtw(s1, s2, dist, imin, imax)[1]
   elseif method == :fastdtw
@@ -148,4 +148,10 @@ function sound2mfcc(s::Sound; useFrameEngery=true, kw...)
     m[:,1] = e
   end
   return Array(m')
+end
+
+# Calculate radius limits how DynamicAxisWarping used to
+function classic_radius_limits(r, len1, len2)
+	seq = 1:len1
+	return lim1 = max.(seq .- r, 1), min.(seq .+ r, len2)
 end
