@@ -4,6 +4,8 @@
 
 [![docs](https://img.shields.io/badge/docs-release-green)](https://maetshju.github.io/Phonetics.jl)
 
+[![DOI](https://zenodo.org/badge/267223711.svg)](https://zenodo.org/badge/latestdoi/267223711) (links to Zenodo DOI for each tagged version from v0.1.1 on for archival and referencing purposes)
+
 <img src="imgs/logo.svg" width="150" alt="Phonetics.jl logo: A capital P with a sine wave traveling through it">
 
 Currently under development. Some function interfaces may break from time to time while in early releases.
