@@ -3,7 +3,11 @@
 name: Test, coverage, and docs
 
 # Controls when the action will run. 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+    tags: [v*]
+  pull_request:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:        
