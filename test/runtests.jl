@@ -1,5 +1,5 @@
 using Phonetics
-using Phonetics.MFCC
+using MFCC
 using Test
 using DelimitedFiles
 using StatsBase
@@ -323,9 +323,4 @@ end
   res = radiusSearch(tree, ["HH", "AE1", "T"], 1)
   res = sort(join.(res, " "))
   @test res == ["B AE1 T", "K AE1 T"]
-end
-
-@testset "MFCC" begin
-
-  include("MFCC/runtests.jl")
 end

@@ -4,15 +4,10 @@
 
 [![docs](https://img.shields.io/badge/docs-release-green)](https://maetshju.github.io/Phonetics.jl)
 
-[![DOI](https://zenodo.org/badge/267223711.svg)](https://zenodo.org/badge/latestdoi/267223711) (links to Zenodo DOI for each tagged version from v0.1.1 on for archival and referencing purposes; see license for copyright statement and repo ownership)
+[![DOI](https://zenodo.org/badge/267223711.svg)](https://zenodo.org/badge/latestdoi/267223711)  
+(links to Zenodo DOI for each tagged version from v0.1.1 on for archival and referencing purposes; see license for copyright statement and repo ownership)
 
 <img src="imgs/logo.svg" width="150" alt="Phonetics.jl logo: A capital P with a sine wave traveling through it">
-
-Currently under development. Some function interfaces may break from time to time while in early releases.
-
-Please note that the MFCC module is effectively a simple static link to the source code from [MFCC.jl v0.3.2](https://github.com/JuliaDSP/MFCC.jl), which is permitted under the BSD-2 license it was conveyed under. It has only been trivially modified to work with newer versions of `HDF5.jl` and to work as a statically linked library. The licenses for that code by itself are provided within the `src/MFCC` and `test/MFCC` folders. If you use the MFCC module itself from `Phonetics.jl` in your own work, please make sure to give credit as appropriate to David A. van Leeuwen, according to the license in the MFCC module folder.
-
-The license for the `Phonetics.jl` project as a whole is given in the `LICENSE.txt` file in the root folder. Please note that statically including the `MFCC.jl` code is currently intended as a stopgap while version compatiblity is resolved in `MFCC.jl` so that dynamic linking of it via the package manager can be retinroduced.
 
 `Phonetics.jl` can be installed with
 
