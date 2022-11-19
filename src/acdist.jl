@@ -1,5 +1,5 @@
 using DynamicAxisWarping
-using Phonetics.MFCC: mfcc
+using MFCC: mfcc
 using Distances
 using DataFrames
 using Statistics

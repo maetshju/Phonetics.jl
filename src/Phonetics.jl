@@ -1,7 +1,5 @@
 module Phonetics
 
-include("MFCC/MFCC.jl")
-
 include("sound.jl")
 export Sound
 
