@@ -30,7 +30,7 @@ mutable struct VowelSpace
   ∂z∂f2
 end
 
-function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false, type=:density, kw...)
+function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false, type=:density, add=false, kw...)
 
   f1vals = v.f1
   f2vals = v.f2
@@ -74,15 +74,15 @@ function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false,
   if type==:density
     p = Plots.plot!(hullpts[:,1], hullpts[:,2], line=(3, :path), label="Threshold")
   elseif type==:area
-    p = Plots.plot(hullpts[:,1], hullpts[:,2], line=(3, :path); kw...)
+    if add
+		p = Plots.plot!(hullpts[:,1], hullpts[:,2], line=(3, :path); kw...)
+	else
+		p = Plots.plot(hullpts[:,1], hullpts[:,2], line=(3, :path); kw...)
+	end
   end
   return p
 end
 
-function Plots.plot!(v::VowelSpace; standardize_axes=true, scale_densities=false, type=:density, kw...)
-  p = plot(v, standardize_axes=standardize_axes, scale_densities=scale_densities, type=type; kw...)
-  Plots.plot!(p)
-end
 
 """
     vdi(v::VowelSpace; unstandardize=true)
