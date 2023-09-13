@@ -1,7 +1,7 @@
 name = "Phonetics"
 uuid = "e3a49ea3-7edf-49e1-b84f-839ab305a372"
 authors = ["Matthew C. Kelley <matthew.curtis.kelley@gmail.com"]
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
@@ -48,7 +48,7 @@ SpecialFunctions = "2.1"
 StatsBase = "0.33"
 WAV = "1.2"
 MFCC = "0.3.3"
-julia = "1.6 - 1.8"
+julia = "^1.6"
 
 [extras]
 HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
