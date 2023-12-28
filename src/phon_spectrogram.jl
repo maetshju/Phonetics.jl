@@ -28,6 +28,9 @@ phonspec
 @userplot PhonSpec
 @recipe function f(p::PhonSpec; pre_emph=0.97, style=:broadband, dbr=55)
 
+	if length(p.args) != 2
+		error("Must pass 2 arguments for spectrogram, `s` the samples and `fs` the sampling frequency")
+	end
 	s, fs = p.args
 
 	pre_emph_filt = PolynomialRatio([1, -pre_emph], [1])

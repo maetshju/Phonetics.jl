@@ -1,14 +1,16 @@
-using Plots
+using RecipesBase
 using DataFrames
 using LinearAlgebra
 using Distributions
 
 """
-    vowelPlot(f1, f2, cats; [meansOnly=false, addLabels=true, ell=false, ellPercent=0.67, nEllPts=500, markersize=1, linewidth=2, kw...])
+    vowelPlot(f1, f2, cats; [meansOnly=false, addLabels=true, ell=false, ellPercent=0.67, nEllPts=500, kw...])
 
 Create an F1-by-F2 vowel plot. The `f1` values are displayed along the x-axis, and the `f2` values are displayed along the y-axis, with each unique vowel class in `cats` being represented with a new color. The series labels in the legend will take on the unique values contained in `cats`. The alternate display whereby reversed F2 is on the x-axis and reversed F1 is on the y-axis can be created by passing the F2 values in for the `f1` argument and F1 values in for the `f2` argument, and then using the `:flip` magic argument provided by the `Plots` package.
 
 If `meansOnly` is set to true, only the mean values for each vowel category are plotted. Using `ell=true` will plot a data ellipse that approximately encompases the percentage of data specified by `ellPercent`. The ellipse is represented by a number of points specified with `nEllPts`. Other arguments to `plot` are passed in through the splatted `kw` argument. Setting the `addLabels` argument to `true` will add the text label of the vowel category above and to the right of the mean.
+
+Argument structure inferred from using plot recipe. Parameters such as `xlim`, `ylim`, `color`, and `size` should be passed as keyword arguments, as with standard calls to `plot`. Plot parameters `markersize` defaults to `3` and `linewidth` defaults to 3.
 
 Args
 ======
@@ -16,58 +18,71 @@ Args
 * `f1` The F1 values, or otherwise the values to plot on the x-axis
 * `f2` The F2 values, or otherwise the values to plot on the y-axis
 * `cats` The vowel categories associated with each F1, F2 pair
-* `meansOnly` (keyword) Plot only mean value for each category
-* `addLabels` (keyword) Add labels for each category to the plot near the mean
-* `ell` (keyword) Whether to add data ellipses to the plot
-* `ellPercent` (keyword) How much of the data distribution the ellipse should cover (approximately)
-* `nEllPts` (keyword) How many points should be used when plotting the ellipse
-* `markersize` (keyword) How large the markers should be; passed directly to `plot`
-* `linewidth` (keyword) How wide the line for the llipses should be; passed directly to `plot`
+* `meansOnly` Plot only mean value for each category
+* `addLabels` Add labels for each category to the plot near the mean
+* `ell` Whether to add data ellipses to the plot
+* `ellPercent` Percentage of the data distribution the ellipse should cover (approximately)
+* `nEllPts` How many points should be used when plotting the ellipse
 """
-function vowelPlot(f1, f2, cats; meansOnly=false, addLabels=false, ell=false, ellPercent=0.67, nEllPts=500, markersize=3, linewidth=3, kw...)
-  d = DataFrame(f1=f1, f2=f2, cat=cats)
-  groups = groupby(d, :cat)
+vowelplot
 
-  if meansOnly
-    p = Plots.scatter([mean(groups[1].f1)], [mean(groups[1].f2)], label=groups[1].cat[1], 
-      markersize=markersize; kw...)
-  else
-    p = Plots.scatter(groups[1].f1, groups[1].f2, label=groups[1].cat[1],
-      markersize=markersize; kw...)
-  end
+@userplot VowelPlot
+@recipe function f(v::VowelPlot; meansOnly=false, addLabels=false, ell=false, ellPercent=0.67, nEllPts=500)
+	if length(v.args) != 3
+		error("Must pass 3 arguments: `f1` the F1 values, `f2` the F2 values, and `cats` the vowel categories")
+	end
+	f1, f2, cats = v.args
+	d = DataFrame(f1=f1, f2=f2, cat=cats)
+	groups = groupby(d, :cat)
 
-  jt1 = abs(mean(f1) / 20)
-  jt2 = abs(mean(f2) / 20)
+	# Jitter amount for group labels
+	jt1 = abs(mean(f1) / 20)
+	jt2 = abs(mean(f2) / 20)
 
-  if addLabels
-    p = annotate!(mean(groups[1].f1) + jt1, mean(groups[1].f2) + jt2, text(groups[1].cat[1], color=palette(:auto)[1]))
-  end
+	for (i, g) in enumerate(groups)
 
-  if ell
-    e = ellipsePts(groups[1].f1, groups[1].f2, percent=ellPercent, nPoints=nEllPts)
-    p = Plots.plot!(e[:,1], e[:,2], label="", color=1, linewidth=linewidth)
-  end
+		if meansOnly
+			@series begin
+				seriestype := :scatter
+				label := g.cat[1]
+				markersize --> 3
+				color := i
+				[mean(g.f1)], [mean(g.f2)]
+			end
+		else
+			@series begin
+				seriestype := :scatter
+				label := g.cat[1]
+				markersize --> 3
+				color := i
+				g.f1, g.f2
+			end
+		end
 
-  for (i, g) in enumerate(groups)
-    if i == 1 continue end
-
-    if meansOnly
-      p = Plots.scatter!([mean(g.f1)], [mean(g.f2)], label=g.cat[1], color=i,
-        markersize=markersize)
-    else
-      p = Plots.scatter!(g.f1, g.f2, label=g.cat[1], color=i, markersize=markersize)
-    end
-
-    if addLabels
-      p = annotate!(mean(g.f1) + jt1, mean(g.f2) + jt2, text(g.cat[1], color=palette(:auto)[i]))
-    end
-
-    if ell
-      e = ellipsePts(g.f1, g.f2, percent=ellPercent, nPoints=nEllPts)
-      p = Plots.plot!(e[:,1], e[:,2], label="", color=i, linewidth=linewidth)
-    end
-  end
-  return p
+		if ell
+			e = ellipsePts(g.f1, g.f2, percent=ellPercent, nPoints=nEllPts)
+			@series begin
+				seriestype := :path
+				label := ""
+				color := i
+				linewidth --> 3
+				e[:,1], e[:,2]
+			end
+		end
+	end
+	
+	# Add annotations in a new series where each point is the jittered
+	# mean for a category
+	if addLabels
+		@series begin
+			mns = combine(groups, [:f1, :f2] .=> mean)
+			seriestype := :scatter
+			markersize := 0
+			label := ""
+			series_annotations := [(mns.cat[i], palette(:auto)[i]) for i in 1:size(mns, 1)]
+			mns.f1_mean .+ jt1, mns.f2_mean .+ jt2
+		end
+	end
 end
 
 """
@@ -85,7 +100,7 @@ Args
 * `percent` (keyword) Percent of the data distribution the ellipse should approximately cover
 * `nPoints` (keyword) How many points to use when drawing the ellipse
 """
-function ellipsePts(f1, f2; percent=0.95, nPoints=500)
+function ellipsePts(f1, f2; percent=0.67, nPoints=500)
   Σ = cov(hcat(f1, f2))
   L = cholesky(Σ).L
 
