@@ -22,9 +22,10 @@ As an example, a recording of the sentence "I want a spectrogram" can be plotted
 ```julia
 using Phonetics
 using WAV
+using Plots
 s, fs = wavread("iwantaspectrogram.wav")
 s = vec(s)
-phonspec(s, fs)
+phonspec(s, fs, ylim=(0, 5000))
 ```
 
 ![A spectrogram of the phrase "I want a spectrogram"](imgs/iwantaspectrogram.png)
