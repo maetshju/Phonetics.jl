@@ -1,12 +1,12 @@
 # Vowel plotting
 
-The function provided for plotting vowels diplays offers a variety of visualization techniques for displaying a two-dimensional plot for vowel tokens. Traditionally, it is F1 and F2 that are plotted, but any two pairs of data can be plotted, such as F2 and F3, F2-F1 and F3, etc. A traditional, vanilla vowel plot only requires three positional arguments, `f1`, `f2`, and `cats`. Other plotting arguments that the `Plots` package can accept will be passed through to the first call to `plot`.
+The function provided for plotting vowels diplays offers a variety of visualization techniques for displaying a two-dimensional plot for vowel tokens. Traditionally, it is F1 and F2 that are plotted, but any two pairs of data can be plotted, such as F2 and F3, F2-F1 and F3, etc. A traditional, vanilla vowel plot only requires three positional arguments, `f1`, `f2`, and `cats`. The plot specification is given using `RecipesBase.jl` to avoid depending on `Plots.jl`. It is necessary to specify `using Plots` before spectrograms can be plotted.
 
 ```@example
 using Phonetics # hide
-using Plots # hide
+using Plots
 data = generateFormants(30, gender=["w"], seed=56) # hide
-vowelPlot(data.f1, data.f2, data.vowel, xlab="F1 (Hz)", ylab="F2 (Hz)")
+vowelplot(data.f1, data.f2, data.vowel, xlab="F1 (Hz)", ylab="F2 (Hz)")
 savefig("vanilla_vowel_plot.svg") # hide
 nothing # hide
 ```
@@ -20,7 +20,7 @@ For those inclined to use the alternate axes configuration with F2 decreasing on
 using Phonetics # hide
 using Plots # hide
 data = generateFormants(30, gender=["w"], seed=56) # hide
-vowelPlot(data.f2, data.f1, data.vowel,
+vowelplot(data.f2, data.f1, data.vowel,
   xflip=true, yflip=true, xlab="F2 (Hz)", ylab="F1 (Hz)")
 savefig("alt_axes_vowel_plot.svg") # hide
 nothing # hide
@@ -36,7 +36,7 @@ The `vowelPlot` function also allows for ellipses to be plotted around the value
 using Phonetics # hide
 using Plots # hide
 data = generateFormants(30, gender=["w"], seed=56) # hide
-vowelPlot(data.f1, data.f2, data.vowel, ell=true, ellPercent=0.67,
+vowelplot(data.f1, data.f2, data.vowel, ell=true, ellPercent=0.67,
   xlab="F1 (Hz)", ylab="F2 (Hz)")
 savefig("ellipse_vowel_plot.svg") # hide
 nothing # hide
@@ -52,7 +52,7 @@ One final feature to point out is that the `vowelplot` function can also plot ju
 using Phonetics # hide
 using Plots # hide
 data = generateFormants(30, gender=["w"], seed=56) # hide
-vowelPlot(data.f1, data.f2, data.vowel, ell=true,
+vowelplot(data.f1, data.f2, data.vowel, ell=true,
   meansOnly=true, addLabels=true, xlab="F1 (Hz)", ylab="F2 (Hz)")
 savefig("means_only_ellipse_vowel_plot.svg") # hide
 nothing # hide
@@ -65,12 +65,11 @@ The labels are offset from the mean value a bit so as to not cover up the marker
 ## Function documentation
 
 ```@docs
-vowelPlot(f1, f2, cats; [meansOnly=false, addLabels=true, ell=false,
-  ellPercent=0.67, nEllPts=500, markersize=1, linewidth=2, kw...])
+vowelplot
 ```
 
 ```@docs
-ellipsePts(f1, f2; percent=0.95, nPoints=500)
+ellipsePts
 ```
 
 ## References
