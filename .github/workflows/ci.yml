@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Test, coverage, and docs
+name: Test and coverage
 
 # Controls when the action will run. 
 on:
@@ -32,7 +32,3 @@ jobs:
       - uses: codecov/codecov-action@v3
         with: 
           file: lcov.info
-      - uses: julia-actions/julia-docdeploy@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCUMENTER_KEY: ${{ secrets.documenter }}
