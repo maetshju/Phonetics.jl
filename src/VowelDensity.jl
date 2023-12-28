@@ -4,7 +4,8 @@ using DelimitedFiles
 using LinearAlgebra
 using QHull
 using GeometricalPredicates
-using Plots
+# using Plots
+using RecipesBase
 using Measures
 using ProgressBars
 using Base
@@ -30,8 +31,12 @@ mutable struct VowelSpace
   ∂z∂f2
 end
 
-function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false, type=:density, add=false, kw...)
+@userplot VowelSpacePlot
+@recipe function f(vsp::VowelSpacePlot; standardize_axes=true, scale_densities=false, type=:density)
 
+# function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false, type=:density, add=false, kw...)
+
+  v = vsp.args[1]
   f1vals = v.f1
   f2vals = v.f2
 
@@ -53,9 +58,12 @@ function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false,
   # need to transpose the matrix for f1 to be indexed with columns
   # and f2 to be indexed with rows
 
-  if type==:density
-    p = Plots.heatmap(f1vals, f2vals, density'; kw...)
-  end
+	if type==:density
+		@series begin
+			seriestype := :heatmap
+			f1vals, f2vals, density'
+		end
+	end
 
   hullpts = Vector()
   for vtx in v.hull.vertices
@@ -72,15 +80,19 @@ function Plots.plot(v::VowelSpace; standardize_axes=true, scale_densities=false,
   end
 
   if type==:density
-    p = Plots.plot!(hullpts[:,1], hullpts[:,2], line=(3, :path), label="Threshold")
+	@series begin
+		seriestype := :path
+		label := "Threshold"
+		linewidth --> 3
+		hullpts[:, 1], hullpts[:,2]
+	end
   elseif type==:area
-    if add
-		p = Plots.plot!(hullpts[:,1], hullpts[:,2], line=(3, :path); kw...)
-	else
-		p = Plots.plot(hullpts[:,1], hullpts[:,2], line=(3, :path); kw...)
+	@series begin
+		seriestype := :path
+		linewidth --> 3
+		hullpts[:,1], hullpts[:,2]
 	end
   end
-  return p
 end
 
 
