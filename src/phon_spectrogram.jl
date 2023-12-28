@@ -55,6 +55,7 @@ phonspec
 	# an error
 	seriestype := :heatmap
 	clim := (-dbr, 0)
+	ylim --> (0, 5000)
 	spec.time, spec.freq, db
 end
 
