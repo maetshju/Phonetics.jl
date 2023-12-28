@@ -13,6 +13,7 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
+      - run: sudo apt-get update; sudo apt-get install python3-scipy
       - uses: actions/checkout@v3
       - uses: julia-actions/julia-buildpkg@latest  # if package requires Pkg.build()
       - uses: julia-actions/julia-docdeploy@latest
