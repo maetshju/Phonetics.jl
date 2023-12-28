@@ -1,6 +1,6 @@
 # Spectrograms
 
-A basic function is provided to plot spectrograms that look familiar to phoneticians. It makes use of the `spectrogram` function from `DSP.jl` to perform the short-time Fourier analysis.
+A basic function is provided to plot spectrograms that look familiar to phoneticians. It makes use of the `spectrogram` function from `DSP.jl` to perform the short-time Fourier analysis. The plot specification is given using `RecipesBase.jl` to avoid depending on `Plots.jl`. It is necessary to specify `using Plots` before spectrograms can be plotted.
 
 ## Examples	
 
@@ -9,6 +9,7 @@ A standard broadband spectrogram can be created without using optional parameter
 ```@example
 using Phonetics # hide
 using WAV
+using Plots
 s, fs = wavread("assets/iwantaspectrogram.wav")
 s = vec(s)
 phonspec(s, fs)
@@ -21,7 +22,7 @@ using Phonetics # hide
 using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
-using Plots
+using Plots # hide
 phonspec(s, fs, col=:binary)
 ```
 
@@ -32,6 +33,7 @@ using Phonetics # hide
 using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
+using Plots # hide
 phonspec(s, fs, style=:narrowband)
 ```
 
@@ -40,6 +42,7 @@ And, the pre-emphasis can be disabled by passing in a value of 0 for the `pre_em
 ```@example
 using Phonetics # hide
 using WAV # hide
+using Plots # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
 phonspec(s, fs, pre_emph=0)
@@ -48,5 +51,5 @@ phonspec(s, fs, pre_emph=0)
 # Function documentation
 
 ```@docs
-phonspec(s::Vector, fs; pre_emph=0.97, col=:magma, style=:broadband, dbr=55, size=(600, 400))
+phonspec
 ```

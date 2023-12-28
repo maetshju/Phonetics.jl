@@ -4,13 +4,13 @@ include("sound.jl")
 export Sound
 
 include("VowelDensity.jl")
-export Formants, VowelSpace, plot, plot!, area, vdi
+export Formants, VowelSpace, area, vdi, vowelspaceplot
 
 include("normalize.jl")
 export neareyE, neareyI, lobanov, formantWiseLogMean, nearey1, logmeanI, formantBlindLogMean, nearey2, logmeanE
 
 include("vowelplot.jl")
-export vowelPlot, ellipsePts
+export vowelplot, ellipsePts
 
 include("acdist.jl")
 export acdist, avgseq, distinctiveness, sound2mfcc
