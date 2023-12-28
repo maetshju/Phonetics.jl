@@ -1,4 +1,4 @@
-name: Documenter
+name: docs
 on:
   push:
     branches: [master]
