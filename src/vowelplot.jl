@@ -4,7 +4,7 @@ using LinearAlgebra
 using Distributions
 
 """
-    vowelplot(f1, f2, cats; [meansOnly=false, addLabels=true, ell=false, ellPercent=0.67, nEllPts=500, kw...])
+    vowelplot(f1, f2, cats; meansOnly=false, addLabels=true, ell=false, ellPercent=0.67, nEllPts=500, kw...)
 
 Create an F1-by-F2 vowel plot. The `f1` values are displayed along the x-axis, and the `f2` values are displayed along the y-axis, with each unique vowel class in `cats` being represented with a new color. The series labels in the legend will take on the unique values contained in `cats`. The alternate display whereby reversed F2 is on the x-axis and reversed F1 is on the y-axis can be created by passing the F2 values in for the `f1` argument and F1 values in for the `f2` argument, and then using the `:flip` magic argument provided by the `Plots` package.
 
