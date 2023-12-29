@@ -2,7 +2,7 @@ using DSP
 using RecipesBase
 
 """
-	phonspec(s, fs; pre_emph=0.97, style=:broadband, dbr=55, kw...)
+	phonspec(s, fs; pre_emph=0.97, specstyle=:broadband, dbr=55, kw...)
 	
 Rudimentary functionality to plot a spectrogram, with parameters familiar to phoneticians.
 Includes a pre-emphasis routine which helps increase the intensity of the
@@ -19,7 +19,7 @@ Args
 * `s` A vector containing the samples of a sound
 * `fs` Sampling frequency of `s` in Hz
 * `pre_emph` The α coefficient for pre-emmphasis; default value of 0.97 corresponds to a cutoff frequency of approximately 213 Hz before the 6 dB / octave increase begins
-* `style` Either `:broadband` or `:narrowband`; will affect the window length and window stride
+* `specstyle` Either `:broadband` or `:narrowband`; will affect the window length and window stride
 * `dbr` The dynamic range; all frequencies that are `dbr` decibels quieter than the loudest frequency will not be displayed; will specify the `clim` argument
 * `kw...` extra named parameters to pass to `heatmap`
 """
