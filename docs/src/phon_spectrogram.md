@@ -15,7 +15,7 @@ s = vec(s)
 phonspec(s, fs)
 ```
 
-A color scheme more similar to the Praat grayscale can be achieved using the `col` argument and the `:gist_yarg` color scheme. These spectrograms are created using the `heatmap` function from `Plots.jl`, so [any color scheme available in the Plots package](https://docs.juliaplots.org/stable/generated/colorschemes/) can be used, though not all of them produce legible spectrograms.
+A color scheme more similar to the Praat grayscale can be achieved using the `color` argument from `Plots.jl` and the `:binary` color scheme. These spectrograms are created using the `heatmap` function from `Plots.jl`, so [any color scheme available in the Plots package](https://docs.juliaplots.org/stable/generated/colorschemes/) can be used, though not all of them produce legible spectrograms.
 
 ```@example
 using Phonetics # hide
@@ -23,10 +23,10 @@ using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
 using Plots # hide
-phonspec(s, fs, col=:binary)
+phonspec(s, fs, color=:binary)
 ```
 
-A narrowband style spectrogram can be plotted using the `style` argument:
+A narrowband style spectrogram can be plotted using the `specstyle` argument:
 
 ```@example
 using Phonetics # hide
@@ -34,7 +34,7 @@ using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
 using Plots # hide
-phonspec(s, fs, style=:narrowband)
+phonspec(s, fs, specstyle=:narrowband)
 ```
 
 And, the pre-emphasis can be disabled by passing in a value of 0 for the `pre_emph` argument. Pre-emphasis will boost the prevalence of the higher frequencies in comparison to the lower frequencies.

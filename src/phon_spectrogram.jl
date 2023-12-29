@@ -26,7 +26,7 @@ Args
 phonspec
 
 @userplot PhonSpec
-@recipe function f(p::PhonSpec; pre_emph=0.97, style=:broadband, dbr=55)
+@recipe function f(p::PhonSpec; pre_emph=0.97, specstyle=:broadband, dbr=55)
 
 	if length(p.args) != 2
 		error("Must pass 2 arguments for spectrogram, `s` the samples and `fs` the sampling frequency")
@@ -35,9 +35,9 @@ phonspec
 
 	pre_emph_filt = PolynomialRatio([1, -pre_emph], [1])
 	s = filt(pre_emph_filt, s)
-	if style == :broadband
+	if specstyle == :broadband
 		winlen = 0.005
-	elseif style == :narrowband
+	elseif specstyle == :narrowband
 		winlen = 0.05
 	else
 		error("Unsupported `style` value. Value must be either `:broadband` or `:narrowband`")
