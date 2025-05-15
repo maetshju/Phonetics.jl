@@ -25,7 +25,7 @@ using WAV
 using Plots
 s, fs = wavread("iwantaspectrogram.wav")
 s = vec(s)
-phonspec(s, fs)
+phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)")
 ```
 
 ![A spectrogram of the phrase "I want a spectrogram"](imgs/iwantaspectrogram.png)

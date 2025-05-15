@@ -2,12 +2,13 @@ using DSP
 using RecipesBase
 
 """
-	phonspec(s, fs; pre_emph=0.97, specstyle=:broadband, dbr=55, kw...)
+phonspec(s, fs; pre_emph=0.97, dbr=55, win=:gaussian,
+			winparam=nothing, winlen=0.005, winstep=0.002, kw...)
 	
-Rudimentary functionality to plot a spectrogram, with parameters familiar to phoneticians.
-Includes a pre-emphasis routine which helps increase the intensity of the
-higher frequencies in the display. Uses a Kaiser window with a parameter
-value of 2.
+Rudimentary functionality to plot a spectrogram, with parameters familiar to phoneticians. Includes a pre-emphasis routine which helps increase the intensity of the
+higher frequencies in the display. Defaults to a Gaussian window with a standard deviation of 1/6.
+
+For a **broadband** spectrogram, use a value around 0.005 for `winlen`. For a **narrowband** spectrogram, use a value around 0.03 for `winlen`.
 
 Argument structure inferred from using plot recipe. Parameters such as `xlim`,
 `ylim`, `color`, and `size` should be passed as keyword arguments, as with standard calls
@@ -19,14 +20,18 @@ Args
 * `s` A vector containing the samples of a sound
 * `fs` Sampling frequency of `s` in Hz
 * `pre_emph` The α coefficient for pre-emmphasis; default value of 0.97 corresponds to a cutoff frequency of approximately 213 Hz before the 6 dB / octave increase begins
-* `specstyle` Either `:broadband` or `:narrowband`; will affect the window length and window stride
 * `dbr` The dynamic range; all frequencies that are `dbr` decibels quieter than the loudest frequency will not be displayed; will specify the `clim` argument
+* `win` The type of window to use; must be one of `:gaussian` or `:kaiser`
+* `winparam` The parameter affecting the scale of the window; if nothing passed, uses 1/6 for a Gaussian window or 3 for a Kaiser window
+* `winlen` The length of the window in seconds (note that this value gets doubled in the code)
+* `winstep` How far apart each window is in seconds
 * `kw...` extra named parameters to pass to `heatmap`
 """
 phonspec
 
 @userplot PhonSpec
-@recipe function f(p::PhonSpec; pre_emph=0.97, specstyle=:broadband, dbr=55)
+@recipe function f(p::PhonSpec; pre_emph=0.97, dbr=55, win=:gaussian,
+					   winparam=nothing, winlen=0.005, winstep=0.002)
 
 	if length(p.args) != 2
 		error("Must pass 2 arguments for spectrogram, `s` the samples and `fs` the sampling frequency")
@@ -35,17 +40,16 @@ phonspec
 
 	pre_emph_filt = PolynomialRatio([1, -pre_emph], [1])
 	s = filt(pre_emph_filt, s)
-	if specstyle == :broadband
-		winlen = 0.005
-	elseif specstyle == :narrowband
-		winlen = 0.05
+
+	nfft = max(1024, nextpow(2, winlen*2 * fs))
+	n = ceil(Int, winlen*fs)
+	nov = n*2 - floor(Int, winstep * fs)
+	if win == :gaussian
+		w = gaussian(n*2, isnothing(winparam) ? 1/6 : winparam)
 	else
-		error("Unsupported `style` value. Value must be either `:broadband` or `:narrowband`")
+		w = kaiser(n*2, isnothing(winparam) ? 3 : winparam)
 	end
-	nfft = max(1024, nextpow(2, winlen * fs))
-	n = floor(Int, winlen*fs)
-	nov = n - floor(Int, 0.002 * fs)
-	spec = spectrogram(s, n, nov, fs=fs, window = n -> kaiser(n, 2), nfft=nfft)
+	spec = spectrogram(s, n*2, nov, fs=fs, window = w, nfft=nfft)
 	spec_mx = maximum(spec.power)
 	db = 10 .* log10.(spec.power ./ spec_mx)
 	
