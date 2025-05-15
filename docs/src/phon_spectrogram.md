@@ -12,7 +12,7 @@ using WAV
 using Plots
 s, fs = wavread("assets/iwantaspectrogram.wav")
 s = vec(s)
-phonspec(s, fs)
+phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)")
 ```
 
 A color scheme more similar to the Praat grayscale can be achieved using the `color` argument from `Plots.jl` and the `:binary` color scheme. These spectrograms are created using the `heatmap` function from `Plots.jl`, so [any color scheme available in the Plots package](https://docs.juliaplots.org/stable/generated/colorschemes/) can be used, though not all of them produce legible spectrograms.
@@ -23,10 +23,10 @@ using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
 using Plots # hide
-phonspec(s, fs, color=:binary)
+phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", color=:binary)
 ```
 
-A narrowband style spectrogram can be plotted using the `specstyle` argument:
+A narrowband style spectrogram can be plotted using the `winlen` argument:
 
 ```@example
 using Phonetics # hide
@@ -34,7 +34,7 @@ using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
 using Plots # hide
-phonspec(s, fs, specstyle=:narrowband)
+phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", winlen=0.03)
 ```
 
 And, the pre-emphasis can be disabled by passing in a value of 0 for the `pre_emph` argument. Pre-emphasis will boost the prevalence of the higher frequencies in comparison to the lower frequencies.
@@ -45,7 +45,7 @@ using WAV # hide
 using Plots # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = vec(s) # hide
-phonspec(s, fs, pre_emph=0)
+phonspec(s, fs, pre_emph=0, xlab="Time (s)", ylab="Frequency (Hz)")
 ```
 
 # Function documentation
