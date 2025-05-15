@@ -4,7 +4,6 @@ using DelimitedFiles
 using LinearAlgebra
 using QHull
 using GeometricalPredicates
-# using Plots
 using RecipesBase
 using Measures
 using ProgressBars
