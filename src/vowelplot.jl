@@ -115,3 +115,49 @@ function ellipsePts(f1, f2; percent=0.67, nPoints=500)
   pts[2,:] .+= mean(f2)
   return Array(pts')
 end
+
+"""
+    vowelhull(f1, f2; kw...)
+
+Plot a convex hull around the F1-F2 space specified with `f1` and `f2`. Accepts standard keyword arguments for plots from `Plots.jl`.
+
+Args
+======
+
+* `f1` The F1 values, or otherwise the values to plot on the x-axis
+* `f2` The F2 values, or otherwise the values to plot on the y-axis
+"""
+vowelhull
+
+@userplot VowelHull
+@recipe function f(v::VowelHull)
+
+	f1, f2 = v.args
+	d = DataFrame(f1=f1, f2=f2)
+	
+	h = chull([d.f1 d.f2])
+	
+	idxs = [h.vertices; h.vertices[1]]
+	d_sub = d[idxs, :]
+	
+	
+	@series begin
+		seriestype = :scatter
+		[d_sub.f1], [d_sub.f2]
+	end
+end
+
+
+"""
+    hullarea(f1, f2)
+	
+Returns the area of the convex hull around the (by default) F1-F2 space specified by `f1` and `f2`. Areas/volumes of hulls in other spaces, such as speicfied by F1-F2-F3 or F1-F2-duration can also be calculated.
+
+Args
+======
+
+* `f1` The F1 values, or otherwise the first variable/dimension for the hull
+* `f2` The F2 values, or otherwise the second variable/dimension for the hull
+* `x...` Additional variable to include in the hull, such as duration or F3
+"""
+hullarea(f1, f2, x...) = chull(hcat(f1, f2, x...)).area

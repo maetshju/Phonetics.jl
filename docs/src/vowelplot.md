@@ -62,6 +62,41 @@ nothing # hide
 
 The labels are offset from the mean value a bit so as to not cover up the marker showing where the mean value is.
 
+## Convex hulls
+
+Convex hulls can be added to a plot using the `vowelhull` plotting function.
+
+```@example
+using Phonetics # hide
+using Plots # hide
+data = generateFormants(30, gender=["w"], seed=56) # hide
+vowelhull(data.f1, data.f2, label="Vowel space")
+savefig("hull_vowel_plot.svg") # hide
+nothing # hide
+```
+
+A hull can be plotted on top of a scatter using `vowelhull!`.
+
+```@example
+using Phonetics # hide
+using Plots # hide
+data = generateFormants(30, gender=["w"], seed=56) # hide
+vowelplot(data.f1, data.f2, data.vowel, ell=true,
+  meansOnly=true, addLabels=true, xlab="F1 (Hz)", ylab="F2 (Hz)")
+ vowelhull!(data.f1, data.f2, label="")
+savefig("means_only_ellipse_vowel_plot.svg") # hide
+nothing # hide
+```
+
+The area of a convex hull can be calculated using `hullarea`.
+
+```@example
+using Phonetics # hide
+using Plots # hide
+data = generateFormants(30, gender=["w"], seed=56) # hide
+hullarea(data.f1, data.f2)
+```
+
 ## Function documentation
 
 ```@docs
@@ -70,6 +105,14 @@ vowelplot
 
 ```@docs
 ellipsePts
+```
+
+```@docs
+vowelhull
+```
+
+```@docs
+hullarea
 ```
 
 ## References
