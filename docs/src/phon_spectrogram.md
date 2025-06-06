@@ -11,7 +11,7 @@ using Phonetics # hide
 using WAV
 using Plots
 s, fs = wavread("assets/iwantaspectrogram.wav")
-s = vec(s)
+s = s[:,1]
 phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)")
 ```
 
@@ -32,7 +32,7 @@ A narrowband style spectrogram can be plotted using the `winlen` argument:
 using Phonetics # hide
 using WAV # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
-s = vec(s) # hide
+s = s[:,1] # hide
 using Plots # hide
 phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", winlen=0.03)
 ```
@@ -44,7 +44,7 @@ using Phonetics # hide
 using WAV # hide
 using Plots # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
-s = vec(s) # hide
+s = s[:,1] # hide
 phonspec(s, fs, pre_emph=0, xlab="Time (s)", ylab="Frequency (Hz)")
 ```
 
@@ -55,7 +55,7 @@ using Phonetics # hide
 using WAV # hide
 using Plots # hide
 s, fs = wavread("assets/iwantaspectrogram.wav") # hide
-s = vec(s) # hide
+s = s[:,1] # hide
 phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", db=:spl)
 ```
 
