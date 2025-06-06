@@ -28,7 +28,7 @@ Args
 * `winstep` How far apart each window is in seconds
 * `db` How to calculate the scale for decibels; these options result in the same spectrogram image and same functionality of `dbr`, but the numbers on the heatmap scale will change
 	* `:rel` will scale all intensities relative to the loudest frequency component
-	* `:spl` will use a scale relative to Praat's normative threshold (that is, relative to (2e-5)^2 Pa), which produces a scale similar to Praat's
+	* `:spl` will use a scale relative to Praat's normative threshold (that is, relative to (2e-5)^2 Pa^2), which produces a scale similar to Praat's
 * `kw...` extra named parameters to pass to `heatmap`
 """
 phonspec
