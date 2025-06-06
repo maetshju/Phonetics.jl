@@ -48,6 +48,17 @@ s = vec(s) # hide
 phonspec(s, fs, pre_emph=0, xlab="Time (s)", ylab="Frequency (Hz)")
 ```
 
+The dB scale can be made to reflect one more similar to Praat's using the `db` argument set to `:spl`. The spectrogram image does not change, and the `dbr` argument will function the same, but the scale on the legend for the heatmap will change and be similar to how Praats calculates dB.
+
+```@example
+using Phonetics # hide
+using WAV # hide
+using Plots # hide
+s, fs = wavread("assets/iwantaspectrogram.wav") # hide
+s = vec(s) # hide
+phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", db=:spl)
+```
+
 # Function documentation
 
 ```@docs

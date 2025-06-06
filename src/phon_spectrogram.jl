@@ -3,7 +3,8 @@ using RecipesBase
 
 """
 phonspec(s, fs; pre_emph=0.97, dbr=55, win=:gaussian,
-			winparam=nothing, winlen=0.005, winstep=0.002, kw...)
+			winparam=nothing, winlen=0.005, winstep=0.002,
+			db=:rel, kw...)
 	
 Rudimentary functionality to plot a spectrogram, with parameters familiar to phoneticians. Includes a pre-emphasis routine which helps increase the intensity of the
 higher frequencies in the display. Defaults to a Gaussian window with a standard deviation of 1/6.
@@ -25,13 +26,17 @@ Args
 * `winparam` The parameter affecting the scale of the window; if nothing passed, uses 1/6 for a Gaussian window or 3 for a Kaiser window
 * `winlen` The length of the window in seconds (note that this value gets doubled in the code)
 * `winstep` How far apart each window is in seconds
+* `db` How to calculate the scale for decibels; these options result in the same spectrogram image and same functionality of `dbr`, but the numbers on the heatmap scale will change
+	* `:rel` will scale all intensities relative to the loudest frequency component
+	* `:spl` will use a scale relative to Praat's normative threshold (that is, relative to (2e-5)^2 Pa^2), which produces a scale similar to Praat's
 * `kw...` extra named parameters to pass to `heatmap`
 """
 phonspec
 
 @userplot PhonSpec
 @recipe function f(p::PhonSpec; pre_emph=0.97, dbr=55, win=:gaussian,
-					   winparam=nothing, winlen=0.005, winstep=0.002)
+					   winparam=nothing, winlen=0.005, winstep=0.002,
+					   db=:rel)
 
 	if length(p.args) != 2
 		error("Must pass 2 arguments for spectrogram, `s` the samples and `fs` the sampling frequency")
@@ -50,15 +55,22 @@ phonspec
 		w = kaiser(n*2, isnothing(winparam) ? 3 : winparam)
 	end
 	spec = spectrogram(s, n*2, nov, fs=fs, window = w, nfft=nfft)
-	spec_mx = maximum(spec.power)
-	db = 10 .* log10.(spec.power ./ spec_mx)
+
+	if db == :rel
+		spec_mx = maximum(spec.power)
+		db = 10 .* log10.(spec.power ./ spec_mx)
+		clim := (-dbr, 0)
+	elseif db == :spl
+		db = 10 .* log10.(spec.power ./ 2e-5^2)
+		spec_mx = maximum(db)
+		clim := (spec_mx - dbr, spec_mx)
+	end
 	
 	# Important to use ":heatmap" and not "heatmap";
 	# "heatmap" is a function, not a symbol, and it
 	# causes the plot to be patchy instead of throwing
 	# an error
 	seriestype := :heatmap
-	clim := (-dbr, 0)
 	ylim --> (0, 5000)
 	spec.time, spec.freq, db
 end
