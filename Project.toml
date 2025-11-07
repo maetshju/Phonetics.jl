@@ -1,7 +1,7 @@
 name = "Phonetics"
 uuid = "e3a49ea3-7edf-49e1-b84f-839ab305a372"
 authors = ["Matthew C. Kelley <matthew.curtis.kelley@gmail.com"]
-version = "0.6.0"
+version = "0.7.0"
 
 [deps]
 DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
