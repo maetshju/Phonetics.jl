@@ -53,8 +53,8 @@ using WAV
 using Plots
 s, fs = wavread("assets/iwantaspectrogram.wav")
 s = s[:,1]
-t = 1:length(s) ./ fs
-plot(t, s, xlab="Time (s)", ylab="Amplitude")
+t = (1:length(s)) ./ fs
+plot(t, s, xlab="Time (s)", ylab="Amplitude", label="")
 ```
 
 Consult the [`Plots.jl`](https://docs.juliaplots.org/latest/) documentation for more information on customizing a plot like this.
@@ -70,7 +70,7 @@ using Plots
 s, fs = wavread("assets/iwantaspectrogram.wav")
 s = s[:,1]
 t = (1:length(s)) ./ fs
-waveform = plot(t, s, xlab="Time (s)", ylab="Amplitude", label="", widen=false)
+waveform = plot(t, s, xlab="Time (s)", ylab="Amplitude", label="", grid=false, widen=false)
 spectrogram = phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", colorbar=false)
 plot(waveform, spectrogram, layout=grid(2, 1, heights=[0.3, 0.7]))
 ```
@@ -85,7 +85,7 @@ s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = s[:,1] # hide
 t = (1:length(s)) ./ fs # hide
 plot(
-    plot(t, s, xlab="Time (s)", ylab="Amplitude", label="", widen=false),
+    plot(t, s, xlab="Time (s)", ylab="Amplitude", label="", grid=false, widen=false),
     phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", colorbar=false),
     layout=grid(2, 1, heights=[0.3, 0.7])
 )
@@ -103,7 +103,7 @@ s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = s[:,1] # hide
 t = (1:length(s)) ./ fs # hide
 plot(
-    plot(t, s, xaxis=false, yaxis=false, xlab="Time (s)", ylab="Amplitude", label="", widen=false),
+    plot(t, s, xaxis=false, yaxis=false, xlab="Time (s)", ylab="Amplitude", label="", grid=false, widen=false),
     phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", colorbar=false),
     layout=grid(2, 1, heights=[0.3, 0.7])
 )
