@@ -59,6 +59,17 @@ s = s[:,1] # hide
 phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", db=:spl)
 ```
 
+Other time units can be used by setting the `time_scaling` variable to a value other than 1, which will multiply the time in seconds by the scaling factor. For example, if the value is set to 1000, the time values in the plot will correspond to milliseconds.
+
+```@example
+using Phonetics # hide
+using WAV # hide
+using Plots # hide
+s, fs = wavread("assets/iwantaspectrogram.wav") # hide
+s = s[:,1] # hide
+phonspec(s, fs, xlab="Time (ms)", ylab="Frequency (Hz)", db=:spl, time_scaling=1000)
+```
+
 # Function documentation
 
 ```@docs
