@@ -29,6 +29,7 @@ Args
 * `db` How to calculate the scale for decibels; these options result in the same spectrogram image and same functionality of `dbr`, but the numbers on the heatmap scale will change
 	* `:rel` will scale all intensities relative to the loudest frequency component
 	* `:spl` will use a scale relative to Praat's normative threshold (that is, relative to (2e-5)^2 Pa^2), which produces a scale similar to Praat's
+* `time_scaling` Number to multiply the time by; e.g., a value of 1 yields units of seconds and a value of 1000 yields units of milliseconds
 * `kw...` extra named parameters to pass to `heatmap`
 """
 phonspec
@@ -36,7 +37,7 @@ phonspec
 @userplot PhonSpec
 @recipe function f(p::PhonSpec; pre_emph=0.97, dbr=55, win=:gaussian,
 					   winparam=nothing, winlen=0.005, winstep=0.002,
-					   db=:rel)
+					   db=:rel, time_scaling=1)
 
 	if length(p.args) != 2
 		error("Must pass 2 arguments for spectrogram, `s` the samples and `fs` the sampling frequency")
@@ -72,6 +73,6 @@ phonspec
 	# an error
 	seriestype := :heatmap
 	ylim --> (0, 5000)
-	spec.time, spec.freq, db
+	spec.time .* time_scaling, spec.freq, db
 end
 
