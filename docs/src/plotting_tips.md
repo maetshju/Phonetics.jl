@@ -61,7 +61,7 @@ Consult the [`Plots.jl`](https://docs.juliaplots.org/latest/) documentation for 
 
 ## Combining a spectrogram and waveform plot
 
-A waveform can be plotted in a grid with a spectrogram using [layouts](https://docs.juliaplots.org/latest/layouts/) from `Plots.jl`. A basic example might look like this.
+A waveform can be plotted in a grid with a spectrogram using [layouts](https://docs.juliaplots.org/latest/layouts/) from `Plots.jl`. A basic example might look like this. **Note**: The `widen=false` argument for the waveform is necessary to ensure that the beginning and end of the waveform line up with the spectrogram.
 
 ```@example
 using Phonetics # hide
@@ -70,7 +70,7 @@ using Plots
 s, fs = wavread("assets/iwantaspectrogram.wav")
 s = s[:,1]
 t = (1:length(s)) ./ fs
-waveform = plot(t, s, xlab="Time (s)", ylab="Amplitude", label="")
+waveform = plot(t, s, xlab="Time (s)", ylab="Amplitude", label="", widen=false)
 spectrogram = phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", colorbar=false)
 plot(waveform, spectrogram, layout=grid(2, 1, heights=[0.3, 0.7]))
 ```
@@ -85,10 +85,26 @@ s, fs = wavread("assets/iwantaspectrogram.wav") # hide
 s = s[:,1] # hide
 t = (1:length(s)) ./ fs # hide
 plot(
-    plot(t, s, xlab="Time (s)", ylab="Amplitude", label=""),
+    plot(t, s, xlab="Time (s)", ylab="Amplitude", label="", widen=false),
     phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", colorbar=false),
     layout=grid(2, 1, heights=[0.3, 0.7])
 )
 ```
 
 The relative sizes and placements can be controlled using the different layout functionalities in `Plots.jl`.
+
+The axes can be removed from the waveform with the `xaxis` and `yaxis` arguments if desired.
+
+```@example
+using Phonetics # hide
+using WAV # hide
+using Plots # hide
+s, fs = wavread("assets/iwantaspectrogram.wav") # hide
+s = s[:,1] # hide
+t = (1:length(s)) ./ fs # hide
+plot(
+    plot(t, s, xaxis=false, yaxis=false, xlab="Time (s)", ylab="Amplitude", label="", widen=false),
+    phonspec(s, fs, xlab="Time (s)", ylab="Frequency (Hz)", colorbar=false),
+    layout=grid(2, 1, heights=[0.3, 0.7])
+)
+```
